@@ -20,6 +20,7 @@ A simple projects and tasks managing application inspired by Kanban board approa
 - candone-core - RoR based application to manage all records and API server
 
 ## Folder Structure
+- design - UI design sketches
 - src - source codes of the app
   -  client - where all component and containers live
   -  config - application routes
