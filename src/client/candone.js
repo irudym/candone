@@ -13,7 +13,7 @@ const sideMenuItems = [
   {
     id: 100,
     title: 'tasks',
-    link: '/table',
+    link: '/tasks',
     icon: 'browser',
   },
   {

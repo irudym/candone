@@ -9,11 +9,24 @@ import InfoLabel from './components/info_label';
 import CardHolder from './components/card_holder';
 import EditNote from './containers/edit_note';
 import EditTask from './containers/edit_task';
+import NotesHolder from './components/notes_holder';
+import AddButton from './components/add_button';
+import ProjectHolder from './components/project_holder';
 
 import { fetchProjects, fetchNotes, fetchPersons, fetchTasks, updateProject } from '../redux/actions';
 
 import * as SCHEMAS from '../lib/schemas';
 import serverUrl from '../globals/api_server';
+import { elements } from './styles/colors';
+
+const columnHeaderStyle = {
+  fontFamily: 'Roboto',
+  fontSize: '1.4rem',
+  fontWeight: 600,
+  padding: '1.5rem 0',
+  color: elements.title,
+};
+
 
 class Dashboard extends Component {
   state = {
@@ -35,6 +48,8 @@ class Dashboard extends Component {
   }
 
   handleProjectSelect = (project) => {
+    // put notes to the projects
+    console.log("PRJ: ", project);
     this.setState({
       currentProject: project,
     });
@@ -99,58 +114,43 @@ class Dashboard extends Component {
     }
     return (
       <AppContent>
-        <Header>
-          <h2>
-            <Icon name="plug" />
-            Dashboard
-          </h2>
-        </Header>
-        <InfoLabel title="Projects" count={this.props.projects.length} />
-        <InfoLabel title="Tasks" count={this.props.tasks.length} />
-        <InfoLabel title="Persons" count={this.props.persons.length} />
-        <InfoLabel title="Notes" count={this.props.notes.length} />
-        <Grid columns="3" stackable>
+        <Header title="Dashboard" />
+        <Grid columns="3">
           <Grid.Row>
             <Grid.Column key="1" width="3">
-              Projects
+              <div style={columnHeaderStyle}>
+                Projects
+              </div>
+              <ProjectHolder
+                fullscreen
+                devProjects={projects}
+                onClick={this.handleProjectSelect}
+              />
             </Grid.Column>
-            <Grid.Column key="2" width="3">
-              Notes
-            </Grid.Column>
-            <Grid.Column key="3" width="9">
-              Tasks
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column key="1" width="3">
-              <List selection verticalAlign="middle">
-                {projects.map(project => (
-                  <List.Item onClick={() => this.handleProjectSelect(project)}>
-                    <List.Content>
-                      <List.Header>{project.title}</List.Header>
-                    </List.Content>
-                  </List.Item>
-                ))}
-              </List>
-            </Grid.Column>
-            <Grid.Column key="2" width="3">
-              <List selection verticalAlign="middle">
-                {this.state.currentProject.notes.map(note => (
-                  <List.Item onClick={() => this.handleShowEditNote(note)}>
-                    <List.Content>
-                      <List.Header>{note.title}</List.Header>
-                    </List.Content>
-                  </List.Item>
-                ))}
-              </List>
-            </Grid.Column>
-            <Grid.Column key="3" width="9">
+            <Grid.Column key="2" width="10">
+              <div style={columnHeaderStyle}>
+                Tasks
+              </div>
+              <AddButton title="Task" />
               <CardHolder
                 todoTasks={todoTasks}
                 devTasks={devTasks}
                 doneTasks={doneTasks}
                 onDelete={this.handleDeleteTask}
                 onClick={this.handleShowEditTask}
+              />
+            </Grid.Column>
+            <Grid.Column key="3" width="3">
+              <div style={columnHeaderStyle}>
+                Notes
+              </div>
+              <AddButton title="Note" />
+              <NotesHolder
+                notes={this.state.currentProject.notes}
+                onClick={this.handleShowEditNote}
+                fullscreen
+                // onDelete={this.handleNoteDelete}
+                // selected={this.state.selected}
               />
             </Grid.Column>
           </Grid.Row>

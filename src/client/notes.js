@@ -15,6 +15,19 @@ import serverUrl from '../globals/api_server';
 
 import * as SCHEMAS from '../lib/schemas';
 
+const constructMarkdown = (participants, actions, markdown, persons) => {
+  const participantsMd = participants.map((person) => {
+    const name = persons.find(e => e.id === person);
+    if (name) return `${name.first_name} ${name.last_name}`;
+    return '';
+  }).join(', ');
+  let actionsMd = actions.map(action => (
+    action.title
+  )).join('\n- ');
+  if (actionsMd.length === 0) actionsMd = 'No actions';
+  return `#### Participants: ${participantsMd}\n---\n${markdown}\n---\n#### Actions:\n- ${actionsMd}`;
+};
+
 
 class Notes extends Component {
   state = {
@@ -26,6 +39,8 @@ class Notes extends Component {
       participants: [],
       actions: [],
     },
+    markdown: null,
+    selected: null,
   };
 
   handleAddNoteShow = () => {
@@ -40,13 +55,28 @@ class Notes extends Component {
     });
   }
 
-  handleNoteClick = (id) => {
+  handleNoteClick = (note) => {
     // TODO: pass the note as an argument from NoteCard
-    const currentNote = this.props.notes.filter(e => e.id === id)[0];
+    const currentNote = this.props.notes.find(e => e.id === note.id);
+
     if (currentNote) {
+      // in case of the second click on the note show the edit window
+      if (currentNote.id === this.state.currentNote.id) {
+        this.setState({
+          showEditNote: true,
+        });
+      }
+      // if this is the first click, just show the markdown text of the seleected note
+      const markdown = constructMarkdown(
+        currentNote.participants,
+        currentNote.actions,
+        currentNote.markdown,
+        this.props.persons,
+      );
       this.setState({
         currentNote,
-        showEditNote: true,
+        markdown,
+        selected: currentNote.id,
       });
     }
   }
@@ -60,13 +90,15 @@ class Notes extends Component {
   render() {
     return (
       <AppContent>
-        <Header>
+        <Header title="Notes">
           <AddButton onClick={this.handleAddNoteShow} title="Note" />
           <AddNote show={this.state.showAddNote} onClose={this.handleAddNoteClose} />
         </Header>
         <NotesHolder
           onClick={this.handleNoteClick}
           onDelete={this.handleNoteDelete}
+          markdown={this.state.markdown}
+          selected={this.state.selected}
         />
         <EditNote
           show={this.state.showEditNote}
@@ -76,16 +108,18 @@ class Notes extends Component {
       </AppContent>
     );
   }
-};
+}
 
 Notes.propTypes = {
-  notes: PropTypes.arrayOf(PropTypes.shape(SCHEMAS.note)),
+  notes: PropTypes.arrayOf(PropTypes.shape(SCHEMAS.note)).isRequired,
+  persons: PropTypes.arrayOf(PropTypes.shape(SCHEMAS.person)).isRequired,
   deleteNote: PropTypes.func.isRequired,
-}
+};
 
 const mapStateToProps = state => (
   {
     notes: state.notes,
+    persons: state.persons,
   }
 );
 

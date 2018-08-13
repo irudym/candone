@@ -108,7 +108,7 @@ Note.propTypes = {
     value: PropTypes.number,
     text: PropTypes.string,
   })).isRequired,
-  markdown: PropTypes.string.isRequired,
+  markdown: PropTypes.string,
   onNoteChange: PropTypes.func.isRequired,
   onCloseAddAction: PropTypes.func.isRequired,
   onShowAddAction: PropTypes.func.isRequired,
@@ -134,6 +134,7 @@ Note.defaultProps = {
     participants: null,
     actions: null,
   },
+  markdown: '',
 };
 
 export default Note;

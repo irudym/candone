@@ -34,7 +34,7 @@ class Projects extends Component {
   render() {
     return (
       <AppContent>
-        <Header>
+        <Header title="Projects">
           <AddButton onClick={this.handleAddProjectShow} title="Project" />
           <AddProject show={this.state.showAddProject} onClose={this.handleAddProjectClose} />
         </Header>

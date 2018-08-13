@@ -1,16 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Card, Button } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
+import Card from './card';
 
 import * as SCHEMAS from '../../lib/schemas';
-import { first5words } from '../../lib/utils';
+import colors from '../styles/colors';
 
-
-const NoteCard = ({ note, onClick, onDelete }) => (
-  <Card onClick={() => (onClick(note.id))}>
-    <Card.Content>
+const NoteCard = ({
+  note,
+  onClick,
+  onDelete,
+  selected,
+}) => (
+  <Card onClick={() => (onClick(note))} selected={selected}>
+    <Card.Content onDelete={() => { onDelete(note); }} color={colors.green}>
       <Card.Header>
-        { note.title }
+        {note.title}
       </Card.Header>
       <Card.Meta>
         <span className="date">
@@ -22,9 +27,6 @@ const NoteCard = ({ note, onClick, onDelete }) => (
         { note.participants.length}
         <Icon name="star" />
         { note.actions.length}
-        <Button icon float="right" onClick={(e) => { e.stopPropagation(); onDelete(note); }} >
-          <Icon name="trash" />
-        </Button>
       </Card.Description>
     </Card.Content>
   </Card>
@@ -34,6 +36,11 @@ NoteCard.propTypes = {
   note: PropTypes.shape(SCHEMAS.note).isRequired,
   onClick: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
+  selected: PropTypes.bool,
+};
+
+NoteCard.defaultProps = {
+  selected: false,
 };
 
 export default NoteCard;

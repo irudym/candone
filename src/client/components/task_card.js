@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Label, Button, Icon } from 'semantic-ui-react';
+import Card from './card';
 
 import * as SCHEMAS from '../../lib/schemas';
+import colors from '../styles/colors';
 
-const urgencyColors = ['grey', 'green', 'yellow', 'red'];
+const urgencyColors = [colors.darkGray, colors.green, colors.orange, colors.red];
 
 const TaskCard = ({
   task,
@@ -12,9 +13,8 @@ const TaskCard = ({
   onDelete,
 }) => (
   <Card onClick={() => onClick(task)}>
-    <Card.Content>
+    <Card.Content color={urgencyColors[task.urgency]} onDelete={() => { onDelete(task); }}>
       <Card.Header>
-        <Label circular color={urgencyColors[task.urgency]} empty />
         {task.title}
       </Card.Header>
       <Card.Meta>
@@ -23,10 +23,7 @@ const TaskCard = ({
         </span>
       </Card.Meta>
       <Card.Description>
-        {task.descriptions}
-        <Button icon float="right" onClick={(e) => { e.stopPropagation(); onDelete(task); }} >
-          <Icon name="trash" />
-        </Button>
+        {task.description}
       </Card.Description>
     </Card.Content>
   </Card>

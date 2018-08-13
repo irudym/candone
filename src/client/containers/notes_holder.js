@@ -21,6 +21,8 @@ class NotesHolder extends React.Component {
         notes={this.props.notes}
         onClick={this.props.onClick}
         onDelete={this.props.onDelete}
+        markdown={this.props.markdown}
+        selected={this.props.selected}
       />
     );
   }
@@ -31,6 +33,13 @@ NotesHolder.propTypes = {
   fetchNotes: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
+  markdown: PropTypes.string,
+  selected: PropTypes.number,
+};
+
+NotesHolder.defaultProps = {
+  markdown: null,
+  selected: null,
 };
 
 const mapStateToProps = state => (

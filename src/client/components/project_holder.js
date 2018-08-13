@@ -3,24 +3,25 @@ import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
 
 import ProjectCard from './project_card';
-import colors from '../styles/colors';
+import colors, { elements } from '../styles/colors';
 
 import * as SCHEMAS from '../../lib/schemas';
 
 const holderStyle = {
   background: colors.gray,
+  border: `1px solid ${colors.borderGray}`,
+  margin: 8,
+  padding: '1rem',
 };
 
-const Header = () => (
-  <Grid.Row>
-    <Grid.Column key="1" width="5">
-      In Progress
-    </Grid.Column>
-    <Grid.Column key="2" width="5">
-      Done
-    </Grid.Column>
-  </Grid.Row>
-);
+const headerStyle = {
+  color: elements.title,
+  fontFamily: 'Roboto',
+  fontWeight: 500,
+  fontSize: '1.4rem',
+  marginBottom: '1rem 8px',
+  padding: '1rem',
+};
 
 const ProjectColumn = ({
   key,
@@ -28,16 +29,26 @@ const ProjectColumn = ({
   projects,
   onClick,
   onDelete,
+  header,
 }) => (
-  <Grid.Column key={key} width={width} style={holderStyle}>
-    {projects.map(project => (
-      <ProjectCard
-        key={project.id}
-        project={project}
-        onClick={onClick}
-        onDelete={onDelete}
-      />
-    ))}
+  <Grid.Column key={key} width={width}>
+    {header ?
+      <div style={headerStyle}>
+        {header}
+      </div>
+      :
+      null
+    }
+    <div style={holderStyle}>
+      {projects.map(project => (
+        <ProjectCard
+          key={project.id}
+          project={project}
+          onClick={onClick}
+          onDelete={onDelete}
+        />
+      ))}
+    </div>
   </Grid.Column>
 );
 
@@ -47,6 +58,7 @@ ProjectColumn.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.shape(SCHEMAS.project)).isRequired,
   onClick: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
+  header: PropTypes.string.isRequired,
 };
 
 
@@ -55,24 +67,29 @@ const ProjectHolder = ({
   doneProjects,
   onClick,
   onDelete,
+  fullscreen,
 }) => (
-  <Grid columns="2" stackable>
-    <Header />
+  <Grid columns={fullscreen ? '1' : '2'} stackable>
     <Grid.Row>
       <ProjectColumn
         key="1"
-        width="8"
+        width={fullscreen ? null : '8'}
         projects={devProjects}
         onClick={onClick}
         onDelete={onDelete}
+        header={fullscreen ? null : 'In Progress'}
       />
-      <ProjectColumn
-        key="2"
-        width="8"
-        projects={doneProjects}
-        onClick={onClick}
-        onDelete={onDelete}
-      />
+      {fullscreen ?
+        null
+        :
+        <ProjectColumn
+          key="2"
+          projects={doneProjects}
+          onClick={onClick}
+          onDelete={onDelete}
+          header="Done"
+        />
+      }
     </Grid.Row>
   </Grid>
 );
@@ -82,6 +99,11 @@ ProjectHolder.propTypes = {
   doneProjects: PropTypes.arrayOf(PropTypes.shape(SCHEMAS.project)).isRequired,
   onClick: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
+  fullscreen: PropTypes.bool,
+};
+
+ProjectHolder.defaultProps = {
+  fullscreen: false,
 };
 
 export default ProjectHolder;

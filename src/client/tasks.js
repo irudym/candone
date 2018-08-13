@@ -13,7 +13,7 @@ import AddButton from './components/add_button';
 import { deleteTask } from '../redux/actions';
 import serverUrl from '../globals/api_server';
 
-class Table extends Component {
+class Tasks extends Component {
   state = {
     showAddTask: false,
     showEditTask: false,
@@ -63,7 +63,7 @@ class Table extends Component {
   render() {
     return (
       <AppContent>
-        <Header>
+        <Header title="Tasks">
           <AddButton onClick={this.handleAddTaskShow} title="Task" />
           <AddTask show={this.state.showAddTask} onClose={this.handleAddTaskClose} />
         </Header>
@@ -81,7 +81,7 @@ class Table extends Component {
   }
 }
 
-Table.propTypes = {
+Tasks.propTypes = {
   deleteTask: PropTypes.func.isRequired,
 };
 
@@ -95,4 +95,4 @@ const mapDispatchToProps = dispatch => ({
   deleteTask: value => dispatch(deleteTask(value)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Table);
+export default connect(mapStateToProps, mapDispatchToProps)(Tasks);

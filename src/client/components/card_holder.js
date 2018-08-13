@@ -3,21 +3,36 @@ import PropTypes from 'prop-types';
 import { Grid } from 'semantic-ui-react';
 
 import TaskCard from './task_card';
-import colors from '../styles/colors';
+import colors, { elements } from '../styles/colors';
 
 const holderStyle = {
   background: colors.gray,
+  border: `1px solid ${colors.borderGray}`,
+  margin: 8,
+  padding: '1rem',
+};
+
+const headerStyle = {
+  color: elements.title,
+  fontFamily: 'Roboto',
+  fontWeight: 500,
+  fontSize: '1.4rem',
+  marginBottom: '-20px',
+  cell: {
+    margin: '0px 8px',
+    padding: '1rem',
+  },
 };
 
 const Header = () => (
-  <Grid.Row>
-    <Grid.Column key="1" width="5">
+  <Grid.Row style={headerStyle}>
+    <Grid.Column key="1" width="5" style={headerStyle.cell}>
       Todo
     </Grid.Column>
-    <Grid.Column key="2" width="5">
+    <Grid.Column key="2" width="5" style={headerStyle.cell}>
       Development
     </Grid.Column>
-    <Grid.Column key="3" width="5">
+    <Grid.Column key="3" width="5" style={headerStyle.cell}>
       Done
     </Grid.Column>
   </Grid.Row>

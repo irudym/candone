@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Card, Button } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
+import Card from './card';
 
 import * as SCHEMAS from '../../lib/schemas';
+import colors from '../styles/colors';
 
 const ProjectCard = ({ project, onClick, onDelete }) => (
   <Card onClick={() => (onClick(project))}>
-    <Card.Content>
+    <Card.Content color={colors.gray} onDelete={() => { onDelete(project); }}>
       <Card.Header>
         { project.title }
       </Card.Header>
@@ -22,9 +24,6 @@ const ProjectCard = ({ project, onClick, onDelete }) => (
         { project.tasks.length }
         <Icon name="users" />
         { project.persons.length }
-        <Button icon float="right" onClick={(e) => { e.stopPropagation(); onDelete(project); }} >
-          <Icon name="trash" />
-        </Button>
       </Card.Description>
     </Card.Content>
   </Card>

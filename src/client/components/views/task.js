@@ -24,8 +24,10 @@ import StageSelect from '../stage_select';
   * @param {func} onSubmit              form submit handler
   * @param {string} submitTitle         submit button title, default value is 'Add'
   * @param {object} task                task json object
-  * @param {func} onDelete              delete callback, in case not null, button 'Delete' will be shown
-  * @param {func} onStageChange         stage change callback, in case null, the option select will no be shown
+  * @param {func} onDelete              delete callback, in case not null,
+  *                                     button 'Delete' will be shown
+  * @param {func} onStageChange         stage change callback, in case null,
+  *                                     the option select will no be shown
   */
 const Task = ({
   viewTitle,

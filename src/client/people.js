@@ -62,7 +62,7 @@ class People extends Component {
   render() {
     return (
       <AppContent>
-        <Header>
+        <Header title="People">
           <Form>
             <Form.Group inline>
               <AddButton onClick={this.handleAddPersonShow} title="Person"/>
