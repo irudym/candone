@@ -4,11 +4,14 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Form, TextArea, Radio, Button } from 'semantic-ui-react';
+import { Form, TextArea, Radio, Button } from 'semantic-ui-react';
 
 import * as SCHEMAS from '../../../lib/schemas';
 import PeopleSelect from '../people_select';
 import StageSelect from '../stage_select';
+import Modal from '../modal';
+import SubmitButton from '../submit_button';
+import CancelButton from '../cancel_button';
 
 /**
   * Universal component for Add, Edit
@@ -45,8 +48,7 @@ const Task = ({
   onDelete,
   onStageChange,
 }) => (
-  <Modal dimmer="inverted" closeOnRootNodeClick={false} onClose={onClose} open={show} >
-    <Modal.Header>{viewTitle}</Modal.Header>
+  <Modal dimmer="inverted" closeOnRootNodeClick={false} onClose={onClose} open={show} title={viewTitle}>
     <Modal.Content>
       <Form>
         <Form.Input label="Title" placeholder="Task title" onChange={onTitleChange} defaultValue={task.title} />
@@ -72,12 +74,8 @@ const Task = ({
         :
         ''
       }
-      <Button color="blue" onClick={onSubmit} >
-        {submitTitle}
-      </Button>
-      <Button onClick={onClose} >
-        Cancel
-      </Button>
+      <SubmitButton title={submitTitle} onClick={onSubmit} />
+      <CancelButton onClick={onClose} />
     </Modal.Actions>
   </Modal>
 );

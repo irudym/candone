@@ -7,6 +7,8 @@ import Header from './components/header';
 import AppContent from './components/app_content';
 import InfoLabel from './components/info_label';
 import CardHolder from './components/card_holder';
+import AddTask from './containers/add_task';
+import AddNote from './containers/add_note';
 import EditNote from './containers/edit_note';
 import EditTask from './containers/edit_task';
 import NotesHolder from './components/notes_holder';
@@ -32,8 +34,11 @@ class Dashboard extends Component {
   state = {
     showEditNote: false,
     showEditTask: false,
+    showAddTask: false,
+    showAddNote: false,
     currentNote: null,
     currentProject: {
+      id: null,
       tasks: [],
       notes: [],
     },
@@ -71,6 +76,15 @@ class Dashboard extends Component {
 
   handleCloseEditNote = () => this.setState({ showEditNote: false });
 
+  handleCloseAddTask = () => this.setState({ showAddTask: false });
+
+  handleShowAddTask = () => this.setState({ showAddTask: true });
+
+  handleShowAddNote = () => this.setState({ showAddNote: true });
+
+  handleCloseAddNote = () => this.setState({ showAddNote: false });
+
+
   handleShowEditTask = (task) => {
     console.log("DSBRD: showTask: ", task);
     this.setState({
@@ -92,7 +106,6 @@ class Dashboard extends Component {
     const project = {
       ...currentProject,
     };
-    console.log('DASHBRD: update project: ', project);
     // update project
     this.props.updateProject({ url: serverUrl, project });
   }
@@ -125,13 +138,14 @@ class Dashboard extends Component {
                 fullscreen
                 devProjects={projects}
                 onClick={this.handleProjectSelect}
+                selected={this.state.currentProject.id}
               />
             </Grid.Column>
             <Grid.Column key="2" width="10">
               <div style={columnHeaderStyle}>
                 Tasks
               </div>
-              <AddButton title="Task" />
+              <AddButton title="Task" onClick={this.handleShowAddTask} />
               <CardHolder
                 todoTasks={todoTasks}
                 devTasks={devTasks}
@@ -144,7 +158,7 @@ class Dashboard extends Component {
               <div style={columnHeaderStyle}>
                 Notes
               </div>
-              <AddButton title="Note" />
+              <AddButton title="Note" onClick={this.handleShowAddNote} />
               <NotesHolder
                 notes={this.state.currentProject.notes}
                 onClick={this.handleShowEditNote}
@@ -155,6 +169,16 @@ class Dashboard extends Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
+        <AddTask
+          show={this.state.showAddTask}
+          onClose={this.handleCloseAddTask}
+          projectID={this.state.currentProject.id}
+        />
+        <AddNote
+          show={this.state.showAddNote}
+          onClose={this.handleCloseAddNote}
+          projectID={this.state.currentProject.id}
+        />
         <EditNote
           show={this.state.showEditNote}
           onClose={this.handleCloseEditNote}

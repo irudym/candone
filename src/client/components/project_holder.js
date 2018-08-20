@@ -30,6 +30,7 @@ const ProjectColumn = ({
   onClick,
   onDelete,
   header,
+  selected,
 }) => (
   <Grid.Column key={key} width={width}>
     {header ?
@@ -46,6 +47,7 @@ const ProjectColumn = ({
           project={project}
           onClick={onClick}
           onDelete={onDelete}
+          selected={selected === project.id}
         />
       ))}
     </div>
@@ -58,7 +60,13 @@ ProjectColumn.propTypes = {
   projects: PropTypes.arrayOf(PropTypes.shape(SCHEMAS.project)).isRequired,
   onClick: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
-  header: PropTypes.string.isRequired,
+  header: PropTypes.string,
+  selected: PropTypes.number,
+};
+
+ProjectColumn.defaultProps = {
+  selected: null,
+  header: null,
 };
 
 
@@ -68,6 +76,7 @@ const ProjectHolder = ({
   onClick,
   onDelete,
   fullscreen,
+  selected,
 }) => (
   <Grid columns={fullscreen ? '1' : '2'} stackable>
     <Grid.Row>
@@ -78,6 +87,7 @@ const ProjectHolder = ({
         onClick={onClick}
         onDelete={onDelete}
         header={fullscreen ? null : 'In Progress'}
+        selected={selected}
       />
       {fullscreen ?
         null
@@ -100,10 +110,12 @@ ProjectHolder.propTypes = {
   onClick: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   fullscreen: PropTypes.bool,
+  selected: PropTypes.number,
 };
 
 ProjectHolder.defaultProps = {
   fullscreen: false,
+  selected: null,
 };
 
 export default ProjectHolder;

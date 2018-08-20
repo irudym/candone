@@ -7,7 +7,7 @@ const buttonStyle = {
   borderRadius: 3,
   background: elements.okButton,
   color: elements.buttonCaption,
-  fontSize: '1.14rem',
+  fontSize: elements.buttonFontSize,
   fontFamily: 'Roboto',
   fontWeight: 400,
   border: `1px solid ${elements.okButtonBorder}`,

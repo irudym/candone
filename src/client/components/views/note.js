@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Form, Grid, TextArea, Button } from 'semantic-ui-react';
+import { Form, Grid, TextArea, Button } from 'semantic-ui-react';
 import ReactMarkdown from 'react-markdown';
 
 import * as SCHEMAS from '../../../lib/schemas';
@@ -12,6 +12,9 @@ import ActionsHolder from '../actions_holder';
 import AddButton from '../add_button';
 import AddAction from '../add_action';
 import ActionsList from '../actions_list';
+import Modal from '../modal';
+import SubmitButton from '../submit_button';
+import CancelButton from '../cancel_button';
 
 import { toIDList } from '../../../lib/utils';
 
@@ -37,8 +40,7 @@ const Note = ({
   onDelete,
   note,
 }) => (
-  <Modal dimmer="inverted" closeOnRootNodeClick={false} open={show} onClose={onClose} size="large" >
-    <Modal.Header>{viewTitle}</Modal.Header>
+  <Modal dimmer="inverted" closeOnRootNodeClick={false} open={show} onClose={onClose} size="large" title={viewTitle} >
     <Modal.Content>
       <Form>
         <PeopleSelect
@@ -87,12 +89,8 @@ const Note = ({
         :
         ''
       }
-      <Button color="blue" onClick={onSubmit} >
-        {submitTitle}
-      </Button>
-      <Button onClick={onClose} >
-        Cancel
-      </Button>
+      <SubmitButton onClick={onSubmit} title={submitTitle} />
+      <CancelButton onClick={onClose} />
     </Modal.Actions>
   </Modal>
 );

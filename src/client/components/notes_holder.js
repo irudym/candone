@@ -20,6 +20,15 @@ const noteStyle = {
   padding: '1rem',
 };
 
+/**
+ * Component to show notes cards
+ * @param {[type]} notes      Note objects array
+ * @param {[type]} onClick    OnClick on Note Card handler, called with note object as a parameter
+ * @param {[type]} onDelete   Card Delete handler
+ * @param {[type]} markdown   Markdown styled text to preview the note content
+ * @param {[type]} selected   ID of selected note
+ * @param {[type]} fullscreen Accomodate all width of the screen and don't show preview panel
+ */
 const NotesHolder = ({
   notes,
   onClick,

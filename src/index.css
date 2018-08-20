@@ -20,6 +20,14 @@ body {
   background: #52B2A4!important;
 }
 
+.candone-cancel-button:hover {
+  background: #788892!important;
+}
+
+.candone-close-button:hover {
+  color: #788892!important;
+}
+
 
 .candone-card {
 }

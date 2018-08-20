@@ -2,11 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Button, Icon, Message } from 'semantic-ui-react';
 import PeopleSelect from './people_select';
+import SubmitButton from './submit_button';
+import CancelButton from './cancel_button';
+import { elements } from '../styles/colors';
 
-const addActionStyle = {
-  cancelButton: {
-    marginLeft: '1rem',
-  },
+const blockStyle = {
+  background: elements.header,
+};
+
+const iconStyle = {
+  margin: 0,
+};
+
+const buttonStyle = {
+  padding: '0.8rem',
+  marginRight: '1rem',
 };
 
 const AddAction = ({
@@ -18,7 +28,7 @@ const AddAction = ({
   onOwnerChange,
 }) => (
   show ?
-    <Message>
+    <Message style={blockStyle}>
       <Form>
         <PeopleSelect
           label="Owners"
@@ -31,12 +41,8 @@ const AddAction = ({
           placeholder="Enter short description of the action"
           onChange={onTextChange}
         />
-        <Button icon color="blue" onClick={onAdd} >
-          <Icon name="plus" />
-        </Button>
-        <Button icon style={addActionStyle.cancelButton} onClick={onCancel} >
-          <Icon name="cancel" />
-        </Button>
+        <SubmitButton title={<Icon name="plus" style={iconStyle} />} onClick={onAdd} style={buttonStyle} />
+        <CancelButton title={<Icon name="cancel" style={iconStyle} />} onClick={onCancel} style={buttonStyle} />
       </Form>
     </Message>
     :

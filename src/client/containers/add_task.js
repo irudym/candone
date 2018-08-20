@@ -17,14 +17,15 @@ class AddTask extends React.Component {
     description: '',
     stage: 0,
     errors: [],
-    task: {},
+    // task: {},
   }
   state = this.initialState;
 
   componentDidMount() {
     // load persons from API server in case person list is empty
-    if( this.props.persons.length === 0)
+    if (this.props.persons.length === 0) {
       this.props.fetchPersons(serverUrl);
+    }
   }
 
   handleUrgencyChange = (e, { value }) => this.setState({ urgency: value });
@@ -41,20 +42,18 @@ class AddTask extends React.Component {
     });
   }
 
-  handleTitleChange = (e) => this.setState({ title: e.target.value})
+  handleTitleChange = e => this.setState({ title: e.target.value })
 
-  handleDescriptionChange = (e) => this.setState({ description: e.target.value })
+  handleDescriptionChange = e => this.setState({ description: e.target.value })
 
-  validates = () => {
-    return true;
-  }
+  validates = () => true
 
   handleAddTask = () => {
     console.log("Add task: ", this.state);
-    if( this.validates() ) {
+    if (this.validates()) {
       this.props.createTask({
         url: serverUrl,
-        task: this.state,
+        task: { ...this.state, project_id: [this.props.projectID] },
       });
       this.props.onClose();
     }
@@ -93,10 +92,12 @@ AddTask.propTypes = {
   onClose: PropTypes.func.isRequired,
   createTask: PropTypes.func.isRequired,
   fetchPersons: PropTypes.func.isRequired,
+  projectID: PropTypes.number,
 };
 
 AddTask.defaultProps = {
   persons: [],
+  projectID: null,
 };
 
 const mapStateToProps = state => (

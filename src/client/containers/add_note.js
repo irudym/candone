@@ -105,12 +105,14 @@ class AddNote extends Component {
     console.log("===> markdown: ", this.state.markdown);
     console.log("====== END ======");
 
-    if(this.validates()) {
+    if (this.validates()) {
       this.props.createNote({ url: serverUrl, note: {
         participants: this.state.participants,
         actions: this.state.actions,
         markdown: this.state.markdown,
-      }});
+        project_id: [this.props.projectID],
+      },
+      });
       this.handleClose();
     }
   }
@@ -152,7 +154,12 @@ AddNote.propTypes = {
   // onAddNote: PropTypes.func.isRequired,
   persons: PropTypes.arrayOf(PropTypes.object).isRequired,
   createNote: PropTypes.func.isRequired,
+  projectID: PropTypes.number,
 };
+
+AddNote.defaultProps = {
+  projectID: null,
+}
 
 const mapStateToProps = state => (
   {

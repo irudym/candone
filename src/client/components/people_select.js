@@ -2,6 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown, Form } from 'semantic-ui-react';
 
+const labelStyle = {
+  fontSize: '1rem',
+  fontWeight: 400,
+};
+
 const PeopleSelect = ({
   placeholder,
   peopleOptions,
@@ -10,7 +15,7 @@ const PeopleSelect = ({
   defaultValue,
 }) => (
   <Form.Group inline>
-    <label>{label}</label>
+    <label style={labelStyle}>{label}</label>
     <Dropdown
       placeholder={placeholder}
       fluid

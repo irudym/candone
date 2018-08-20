@@ -30,6 +30,9 @@ export const elements = {
   buttonCaption: '#FFFFFF',
   description: colors.darkGray,
   selected: colors.select,
+  header: colors.gray,
+  buttonFontSize: '1rem',
+  closeButton: colors.darkGray,
 };
 
 export default colors;

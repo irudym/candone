@@ -6,8 +6,13 @@ import Card from './card';
 import * as SCHEMAS from '../../lib/schemas';
 import colors from '../styles/colors';
 
-const ProjectCard = ({ project, onClick, onDelete }) => (
-  <Card onClick={() => (onClick(project))}>
+const ProjectCard = ({
+  project,
+  onClick,
+  onDelete,
+  selected,
+}) => (
+  <Card onClick={() => (onClick(project))} selected={selected}>
     <Card.Content color={colors.gray} onDelete={() => { onDelete(project); }}>
       <Card.Header>
         { project.title }
@@ -33,6 +38,11 @@ ProjectCard.propTypes = {
   project: PropTypes.shape(SCHEMAS.project).isRequired,
   onClick: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
+  selected: PropTypes.bool,
+};
+
+ProjectCard.defaultProps = {
+  selected: false,
 };
 
 export default ProjectCard;
