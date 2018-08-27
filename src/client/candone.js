@@ -5,16 +5,10 @@ import Sidebar from './components/sidebar';
 
 const sideMenuItems = [
   {
-    id: 10,
+    id: 100,
     title: 'candone',
     link: '/dashboard',
     icon: 'dashboard',
-  },
-  {
-    id: 100,
-    title: 'tasks',
-    link: '/tasks',
-    icon: 'browser',
   },
   {
     id: 101,
@@ -24,15 +18,21 @@ const sideMenuItems = [
   },
   {
     id: 102,
-    title: 'people',
-    link: '/people',
-    icon: 'users',
+    title: 'tasks',
+    link: '/tasks',
+    icon: 'browser',
   },
   {
     id: 103,
     title: 'notes',
     link: '/notes',
     icon: 'file text outline',
+  },
+  {
+    id: 104,
+    title: 'people',
+    link: '/people',
+    icon: 'users',
   },
 ];
 

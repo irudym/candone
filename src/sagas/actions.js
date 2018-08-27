@@ -74,6 +74,11 @@ export function* createTask(action) {
       { apiUrl: action.payload.url, task: action.payload.task },
     );
     yield put({ type: TYPES.ADD_TASK, value: data });
+    // in case project ID is provided, reload the corresponding project
+    const projectId =  action.payload.task.project_id;
+    if (projectId[0]) {
+      yield reloadProject({ payload: { url: action.payload.url, id: projectId[0] } });
+    }
   } catch (error) {
     const errors = `Cannot create a task ${action.payload.task.title} due to: ${error}`;
     yield put({ type: TYPES.POST_FAILED, errors: [errors] });
@@ -94,6 +99,10 @@ export function* updateTask(action) {
   try {
     yield call(API.updateTask, { ...action.payload });
     yield put({ type: TYPES.CHANGE_TASK, value: action.payload.task });
+    const projectId = action.payload.task.project_id;
+    if (projectId[0]) {
+      yield reloadProject({ payload: { url: action.payload.url, id: projectId[0] } });
+    }
   } catch (error) {
     const errors = `Cannot update the task ${action.payload.task.title} due to: ${error}`;
     yield put({ type: TYPES.POST_FAILED, errors: [errors] });
@@ -127,6 +136,12 @@ export function* createNote(action) {
       { apiUrl: action.payload.url, note: action.payload.note },
     );
     yield put({ type: TYPES.ADD_NOTE, value: data });
+
+    // in case project ID is provided, reload the corresponding project
+    const projectId = action.payload.note.project_id;
+    if (projectId[0]) {
+      yield reloadProject({ payload: { url: action.payload.url, id: projectId[0] } });
+    }
   } catch (error) {
     const errors = `Cannot create a note due to: ${error}`;
     yield put({ type: TYPES.POST_FAILED, errors: [errors] });
@@ -137,6 +152,10 @@ export function* updateNote(action) {
   try {
     const data = yield call(API.updateNote, action.payload);
     yield put({ type: TYPES.CHANGE_NOTE, value: data });
+    const projectId = action.payload.note.project_id;
+    if (projectId[0]) {
+      yield reloadProject({ payload: { url: action.payload.url, id: projectId[0] } });
+    }
   } catch (error) {
     const errors = `Cannot update the note due to: ${error}`;
     yield put({ type: TYPES.POST_FAILED, errors: [errors] });
@@ -202,6 +221,17 @@ export function* deleteProject(action) {
   }
 }
 
+export function* reloadProject(action) {
+  try {
+    console.log("RLD project: ", action.payload.id);
+    const data = yield call(API.fetchProject, action.payload);
+    yield put({ type: TYPES.CHANGE_PROJECT, value: data });
+  } catch (error) {
+    const errors = `Cannot reload project woith ID: ${action.payload.id} due to ${error}`;
+    yield put({ type: TYPES.FETCH_FAILED, errors: [errors] });
+  }
+}
+
 export default function* rootSaga() {
   // ------ persons
   yield takeLatest(TYPES.FETCH_PERSON_TYPES, fetchPersonTypes);
@@ -224,4 +254,5 @@ export default function* rootSaga() {
   yield takeEvery(TYPES.CREATE_PROJECT, createProject);
   yield takeEvery(TYPES.UPDATE_PROJECT, updateProject);
   yield takeEvery(TYPES.DELETE_PROJECT, deleteProject);
+  yield takeLatest(TYPES.RELOAD_PROJECT, reloadProject);
 }

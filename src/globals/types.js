@@ -14,10 +14,19 @@ export const SET_NOTES = 'NOTES/SET';
 export const CHANGE_NOTE = 'NOTES/CHANGE';
 export const REMOVE_NOTE = 'NOTES/REMOVE'; // redu action to remove a note from the state
 
+/*
+ * PROJECT ACTIONS
+ */
 export const ADD_PROJECT = 'PROJECTS/ADD';
 export const SET_PROJECTS = 'PROJECTS/SET';
 export const CHANGE_PROJECT = 'PROJECTS/CHANGE';
 export const REMOVE_PROJECT = 'PROJECTS/REMOVE';
+// Saga actions PROJECTS
+export const FETCH_PROJECTS = 'PROJECTS/FETCH';
+export const CREATE_PROJECT = 'PROJECTS/CREATE';
+export const UPDATE_PROJECT = 'PROJECTS/UPDATE';
+export const DELETE_PROJECT = 'PROJECTS/DELETE';
+export const RELOAD_PROJECT = 'PROJECTS/RELOAD';
 
 export const SET_PERSON_TYPES = 'PERSON_TYPES/SET'; // set the whole person_types array in redux state
 
@@ -41,12 +50,6 @@ export const FETCH_NOTES = 'NOTES/FETCH';
 export const CREATE_NOTE = 'NOTES/CREATE';
 export const UPDATE_NOTE = 'NOTES/UPDATE';
 export const DELETE_NOTE = 'NOTES/DELETE';
-
-// Saga actions PROJECTS
-export const FETCH_PROJECTS = 'PROJECTS/FETCH';
-export const CREATE_PROJECT = 'PROJECTS/CREATE';
-export const UPDATE_PROJECT = 'PROJECTS/UPDATE';
-export const DELETE_PROJECT = 'PROJECTS/DELETE';
 
 // Errors handling actions
 export const FETCH_FAILED = 'FETCH/ERROR';

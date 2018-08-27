@@ -167,4 +167,11 @@ export const deleteProject = value => (
   }
 );
 
+export const reloadProject = value => (
+  {
+    type: TYPES.RELOAD_PROJECT,
+    payload: { ...value },
+  }
+);
+
 export default addPerson;

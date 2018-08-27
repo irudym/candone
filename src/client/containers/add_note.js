@@ -5,7 +5,7 @@ import shortid from 'shortid';
 
 import NoteView from '../components/views/note';
 
-import { createNote } from '../../redux/actions';
+import { createNote, reloadProject } from '../../redux/actions';
 import serverUrl from '../../globals/api_server';
 
 
@@ -36,7 +36,7 @@ class AddNote extends Component {
   handleShowAddAction = () => {
     this.setState({
       showAddAction: true,
-      action: {id: shortid.generate()},
+      action: { id: shortid.generate() },
     });
   }
 
@@ -51,30 +51,24 @@ class AddNote extends Component {
     this.setState({
       action: {
         ...this.state.action,
-        title: e.target.value
-      }
+        title: e.target.value,
+      },
     });
   }
 
   handleAddAction = () => {
-    console.log("Add action: ", this.state.action);
     this.setState({
       actions: [
         ...this.state.actions,
         this.state.action,
       ],
     });
-    console.log("Actions: ", this.state.action);
     this.handleCloseAddAction();
   }
 
-  handleDeleteAction = (id) => {
-    const actions = this.state.actions.filter(action => {
-      if (action.id !== id) return action;
-      return null;
-    });
+  handleDeleteAction = (action) => {
     this.setState({
-      actions,
+      actions: this.state.actions.filter(element => element.id !== action.id),
     });
   }
 
@@ -87,8 +81,9 @@ class AddNote extends Component {
   handleActionOwnerChange = (e, { value }) => {
     this.setState({
       action: {
+        ...this.state.action,
         person_ids: [...value],
-      }
+      },
     });
   }
 
@@ -106,13 +101,16 @@ class AddNote extends Component {
     console.log("====== END ======");
 
     if (this.validates()) {
-      this.props.createNote({ url: serverUrl, note: {
-        participants: this.state.participants,
-        actions: this.state.actions,
-        markdown: this.state.markdown,
-        project_id: [this.props.projectID],
-      },
+      this.props.createNote({
+        url: serverUrl,
+        note: {
+          participants: this.state.participants,
+          actions: this.state.actions,
+          markdown: this.state.markdown,
+          project_id: [this.props.projectID],
+        },
       });
+
       this.handleClose();
     }
   }
@@ -146,7 +144,7 @@ class AddNote extends Component {
       />
     );
   }
-};
+}
 
 AddNote.propTypes = {
   show: PropTypes.bool.isRequired,
@@ -155,11 +153,12 @@ AddNote.propTypes = {
   persons: PropTypes.arrayOf(PropTypes.object).isRequired,
   createNote: PropTypes.func.isRequired,
   projectID: PropTypes.number,
+  reloadProject: PropTypes.func.isRequired,
 };
 
 AddNote.defaultProps = {
   projectID: null,
-}
+};
 
 const mapStateToProps = state => (
   {
@@ -169,6 +168,7 @@ const mapStateToProps = state => (
 
 const mapDispatchToProps = dispatch => ({
   createNote: value => dispatch(createNote(value)),
+  reloadProject: value => dispatch(reloadProject(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddNote);

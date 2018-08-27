@@ -16,6 +16,10 @@ body {
   height: 100%;
 }
 
+input {
+  font-family: 'Roboto'!important;
+}
+
 .candone-button:hover {
   background: #52B2A4!important;
 }

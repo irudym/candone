@@ -11,13 +11,35 @@ import PeopleSelect from '../people_select';
 import ActionsHolder from '../actions_holder';
 import AddButton from '../add_button';
 import AddAction from '../add_action';
-import ActionsList from '../actions_list';
 import Modal from '../modal';
 import SubmitButton from '../submit_button';
 import CancelButton from '../cancel_button';
+import CardHolder from '../card_holder';
 
-import { toIDList } from '../../../lib/utils';
+import colors from '../../styles/colors';
 
+// import { toIDList } from '../../../lib/utils';
+
+const actionsBlockStyle = {
+  background: colors.gray,
+  border: `1px solid ${colors.borderGray}`,
+  marginBottom: 15,
+  borderRadius: 3,
+};
+
+const Actions = ({ actions, onDelete }) => {
+  if (actions.length === 0) return null;
+  return (
+    <div style={actionsBlockStyle}>
+      <CardHolder fullscreen todoTasks={actions} onDelete={onDelete} onClick={() => {}} />
+    </div>
+  );
+};
+
+Actions.propTypes = {
+  actions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onDelete: PropTypes.func.isRequired,
+};
 
 const Note = ({
   viewTitle,
@@ -71,7 +93,7 @@ const Note = ({
         </Grid.Row>
       </Grid>
       <ActionsHolder>
-        <ActionsList actions={actions} onDelete={onDeleteAction} />
+        <Actions actions={actions} onDelete={onDeleteAction} />
         <AddAction
           peopleOptions={peopleOptions}
           show={showAddAction}

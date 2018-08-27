@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { updateTask, deleteTask } from '../../redux/actions';
 import TaskView from '../components/views/task';
 import serverUrl from '../../globals/api_server';
+import * as SCHEMAS from '../../lib/schemas';
 
 class EditTask extends React.Component {
   // TODO: need to keep all task related records in separated object task:{} as
@@ -50,8 +51,9 @@ class EditTask extends React.Component {
     if (this.state.id === null) return;
     this.props.updateTask({
       url: serverUrl,
-      task: this.state,
+      task: { ...this.state, project_id: [this.props.projectID] },
     });
+
     this.props.onClose();
   }
 
@@ -65,7 +67,7 @@ class EditTask extends React.Component {
         text: `${person.first_name} ${person.last_name}`,
       }
     ));
-    return(
+    return (
       <TaskView
         viewTitle="Edit the Task"
         show={this.props.show}
@@ -91,6 +93,12 @@ EditTask.propTypes = {
   onClose: PropTypes.func.isRequired,
   updateTask: PropTypes.func.isRequired,
   deleteTask: PropTypes.func.isRequired,
+  projectID: PropTypes.number,
+  task: PropTypes.shape(SCHEMAS.task).isRequired,
+};
+
+EditTask.defaultProps = {
+  projectID: null,
 };
 
 const mapStateToProps = state => (

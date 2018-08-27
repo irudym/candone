@@ -55,6 +55,12 @@ class AddTask extends React.Component {
         url: serverUrl,
         task: { ...this.state, project_id: [this.props.projectID] },
       });
+
+      // in case Project ID provided: reload projects to apply changes into Redux state
+      // if (this.props.projectID) {
+      //  this.props.reloadProject({ url: serverUrl, id: this.props.projectID });
+      // }
+
       this.props.onClose();
     }
   }

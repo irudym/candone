@@ -12,31 +12,20 @@ const holderStyle = {
   padding: '1rem',
 };
 
+const borderlessHolderStyle = {
+  margin: 8,
+  padding: '1rem',
+};
+
 const headerStyle = {
   color: elements.title,
   fontFamily: 'Roboto',
   fontWeight: 500,
   fontSize: '1.4rem',
-  marginBottom: '-20px',
-  cell: {
-    margin: '0px 8px',
-    padding: '1rem',
-  },
+  // marginBottom: '-20px',
+  margin: '0px 8px',
+  padding: '1rem',
 };
-
-const Header = () => (
-  <Grid.Row style={headerStyle}>
-    <Grid.Column key="1" width="5" style={headerStyle.cell}>
-      Todo
-    </Grid.Column>
-    <Grid.Column key="2" width="5" style={headerStyle.cell}>
-      Development
-    </Grid.Column>
-    <Grid.Column key="3" width="5" style={headerStyle.cell}>
-      Done
-    </Grid.Column>
-  </Grid.Row>
-);
 
 /**
  * Component to show Task cards in corresponding columns
@@ -45,6 +34,7 @@ const Header = () => (
  * @param {array of Task objects} doneTasks array of Tasks with done stage
  * @param {func} onClick   handle click on a Task card (usually view/edit the task)
  * @param {func} onDelete  handle task delete
+ * @param {bool} fullscreen   show only one row with todoTaks (just pass all task as todoTasks to show them all)
  */
 const CardHolder = ({
   todoTasks,
@@ -52,40 +42,65 @@ const CardHolder = ({
   doneTasks,
   onClick,
   onDelete,
+  fullscreen,
 }) => (
-  <Grid columns="3" stackable>
-    <Header />
+  <Grid columns={fullscreen ? '1' : '3'} stackable>
     <Grid.Row>
-      <Grid.Column key="1" width="5" style={holderStyle}>
-        {todoTasks.map(task => (
-          <TaskCard
-            key={task.id}
-            task={task}
-            onClick={onClick}
-            onDelete={onDelete}
-          />
-        ))}
+      <Grid.Column key="1" width={fullscreen ? '8' : '5'}>
+        { fullscreen ?
+          null
+          :
+          <div style={headerStyle}>
+            Todo
+          </div>
+        }
+        <div style={fullscreen ? borderlessHolderStyle : holderStyle}>
+          {todoTasks.map(task => (
+            <TaskCard
+              key={task.id}
+              task={task}
+              onClick={onClick}
+              onDelete={onDelete}
+            />
+          ))}
+        </div>
       </Grid.Column>
-      <Grid.Column key="2" width="5" style={holderStyle}>
-        {devTasks.map(task => (
-          <TaskCard
-            key={task.id}
-            task={task}
-            onClick={onClick}
-            onDelete={onDelete}
-          />
-        ))}
-      </Grid.Column>
-      <Grid.Column key="3" width="5" style={holderStyle}>
-        {doneTasks.map(task => (
-          <TaskCard
-            key={task.id}
-            task={task}
-            onClick={onClick}
-            onDelete={onDelete}
-          />
-        ))}
-      </Grid.Column>
+      { fullscreen ?
+        null
+        :
+        <React.Fragment>
+          <Grid.Column key="2" width="5">
+            <div style={headerStyle}>
+              Development
+            </div>
+            <div style={holderStyle}>
+              {devTasks.map(task => (
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  onClick={onClick}
+                  onDelete={onDelete}
+                />
+              ))}
+            </div>
+          </Grid.Column>
+          <Grid.Column key="3" width="5">
+            <div style={headerStyle}>
+              Done
+            </div>
+            <div style={holderStyle}>
+              {doneTasks.map(task => (
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  onClick={onClick}
+                  onDelete={onDelete}
+                />
+              ))}
+            </div>
+          </Grid.Column>
+        </React.Fragment>
+      }
     </Grid.Row>
   </Grid>
 );
@@ -96,6 +111,11 @@ CardHolder.propTypes = {
   doneTasks: PropTypes.arrayOf(PropTypes.object).isRequired,
   onClick: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
+  fullscreen: PropTypes.bool,
+};
+
+CardHolder.defaultProps = {
+  fullscreen: false,
 };
 
 export default CardHolder;

@@ -134,7 +134,7 @@ class EditNote extends React.Component {
     console.log('UPDATE_NOTE: ', note);
     this.props.updateNote({
       url: serverUrl,
-      note,
+      note: { ...note, project_id: [this.props.projectID] },
     });
 
     this.props.onClose();
@@ -191,6 +191,11 @@ EditNote.propTypes = {
   persons: PropTypes.arrayOf(PropTypes.shape(SCHEMAS.person)).isRequired,
   updateNote: PropTypes.func.isRequired,
   deleteNote: PropTypes.func.isRequired,
+  projectID: PropTypes.number,
+};
+
+EditNote.defaultProps = {
+  projectID: null,
 };
 
 const mapStateToProps = state => (

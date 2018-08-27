@@ -115,9 +115,13 @@ class Dashboard extends Component {
     const todoTasks = [];
     const devTasks = [];
     const doneTasks = [];
+
+    // update current project records
+    const currentProject = projects.find(project => (project.id === this.state.currentProject.id)) || { tasks: [], notes: [] };
+    console.log("It seems that project was reloaded: ", currentProject);
     // fill corersponding arrays with tasks
-    if (this.state.currentProject.tasks) {
-      this.state.currentProject.tasks.map((task) => {
+    if (currentProject.tasks) {
+      currentProject.tasks.map((task) => {
         switch (task.stage) {
           case 0: todoTasks.push(task); break;
           case 1: devTasks.push(task); break;
@@ -138,7 +142,7 @@ class Dashboard extends Component {
                 fullscreen
                 devProjects={projects}
                 onClick={this.handleProjectSelect}
-                selected={this.state.currentProject.id}
+                selected={currentProject.id}
               />
             </Grid.Column>
             <Grid.Column key="2" width="10">
@@ -160,7 +164,7 @@ class Dashboard extends Component {
               </div>
               <AddButton title="Note" onClick={this.handleShowAddNote} />
               <NotesHolder
-                notes={this.state.currentProject.notes}
+                notes={currentProject.notes}
                 onClick={this.handleShowEditNote}
                 fullscreen
                 // onDelete={this.handleNoteDelete}
@@ -172,22 +176,24 @@ class Dashboard extends Component {
         <AddTask
           show={this.state.showAddTask}
           onClose={this.handleCloseAddTask}
-          projectID={this.state.currentProject.id}
+          projectID={currentProject.id}
         />
         <AddNote
           show={this.state.showAddNote}
           onClose={this.handleCloseAddNote}
-          projectID={this.state.currentProject.id}
+          projectID={currentProject.id}
         />
         <EditNote
           show={this.state.showEditNote}
           onClose={this.handleCloseEditNote}
           note={this.state.currentNote}
+          projectID={currentProject.id}
         />
         <EditTask
           show={this.state.showEditTask}
           task={this.state.currentTask}
           onClose={this.handleCloseEditTask}
+          projectID={currentProject.id}
         />
       </AppContent>
     );
