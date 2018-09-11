@@ -15,7 +15,9 @@ import NotesHolder from './components/notes_holder';
 import AddButton from './components/add_button';
 import ProjectHolder from './components/project_holder';
 
-import { fetchProjects, fetchNotes, fetchPersons, fetchTasks, updateProject } from '../redux/actions';
+import { createFollowup } from '../lib/utils';
+
+import { fetchProjects, fetchNotes, fetchPersons, fetchTasks, updateProject, setCurrentProject } from '../redux/actions';
 
 import * as SCHEMAS from '../lib/schemas';
 import serverUrl from '../globals/api_server';
@@ -37,12 +39,8 @@ class Dashboard extends Component {
     showAddTask: false,
     showAddNote: false,
     currentNote: null,
-    currentProject: {
-      id: null,
-      tasks: [],
-      notes: [],
-    },
     currentTask: null,
+    newMarkdown: null,
   }
 
   componentDidMount() {
@@ -55,9 +53,7 @@ class Dashboard extends Component {
   handleProjectSelect = (project) => {
     // put notes to the projects
     console.log("PRJ: ", project);
-    this.setState({
-      currentProject: project,
-    });
+    this.props.setCurrentProject(project);
   }
 
   handleShowEditNote = (note) => {
@@ -80,13 +76,16 @@ class Dashboard extends Component {
 
   handleShowAddTask = () => this.setState({ showAddTask: true });
 
-  handleShowAddNote = () => this.setState({ showAddNote: true });
+  handleShowAddNote = () => this.setState({
+    showAddNote: true,
+    newMarkdown: null,
+  });
 
   handleCloseAddNote = () => this.setState({ showAddNote: false });
 
 
   handleShowEditTask = (task) => {
-    console.log("DSBRD: showTask: ", task);
+    console.log('DSBRD: showTask: ', task);
     this.setState({
       currentTask: task,
       showEditTask: true,
@@ -100,14 +99,22 @@ class Dashboard extends Component {
       ...this.state.currentProject,
       tasks: this.state.currentProject.tasks.filter(elem => elem.id !== task.id),
     };
-    this.setState({
-      currentProject,
-    });
+    this.props.setCurrentProject(currentProject);
     const project = {
       ...currentProject,
     };
     // update project
     this.props.updateProject({ url: serverUrl, project });
+  }
+
+  handleCreateNoteFollowup = (note) => {
+    const markdown = createFollowup(note, this.props.tasks, this.props.persons);
+    console.log('FOLLOWUP: ', markdown);
+
+    this.setState({
+      showAddNote: true,
+      newMarkdown: markdown,
+    });
   }
 
   render() {
@@ -117,8 +124,9 @@ class Dashboard extends Component {
     const doneTasks = [];
 
     // update current project records
-    const currentProject = projects.find(project => (project.id === this.state.currentProject.id)) || { tasks: [], notes: [] };
-    console.log("It seems that project was reloaded: ", currentProject);
+    const currentProject = projects.find(project => (project.id === this.props.currentProject.id)) || { tasks: [], notes: [] };
+
+    console.log('It seems that project was reloaded: ', currentProject);
     // fill corersponding arrays with tasks
     if (currentProject.tasks) {
       currentProject.tasks.map((task) => {
@@ -146,7 +154,7 @@ class Dashboard extends Component {
               />
             </Grid.Column>
             <Grid.Column key="2" width="10">
-              <div style={columnHeaderStyle}>
+              <div style={{ ...columnHeaderStyle, marginBottom: 7 }}>
                 Tasks
               </div>
               <AddButton title="Task" onClick={this.handleShowAddTask} />
@@ -158,8 +166,8 @@ class Dashboard extends Component {
                 onClick={this.handleShowEditTask}
               />
             </Grid.Column>
-            <Grid.Column key="3" width="3">
-              <div style={columnHeaderStyle}>
+            <Grid.Column key="3" width="3" style={{ marginLeft: -60 }}>
+              <div style={{ ...columnHeaderStyle, marginBottom: 7 }}>
                 Notes
               </div>
               <AddButton title="Note" onClick={this.handleShowAddNote} />
@@ -167,6 +175,8 @@ class Dashboard extends Component {
                 notes={currentProject.notes}
                 onClick={this.handleShowEditNote}
                 fullscreen
+                style={{ marginTop: 35 }}
+                onFollowup={this.handleCreateNoteFollowup}
                 // onDelete={this.handleNoteDelete}
                 // selected={this.state.selected}
               />
@@ -182,6 +192,7 @@ class Dashboard extends Component {
           show={this.state.showAddNote}
           onClose={this.handleCloseAddNote}
           projectID={currentProject.id}
+          markdown={this.state.newMarkdown}
         />
         <EditNote
           show={this.state.showEditNote}
@@ -210,6 +221,8 @@ Dashboard.propTypes = {
   fetchPersons: PropTypes.func.isRequired,
   fetchTasks: PropTypes.func.isRequired,
   updateProject: PropTypes.func.isRequired,
+  setCurrentProject: PropTypes.func.isRequired,
+  currentProject: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => (
@@ -218,6 +231,7 @@ const mapStateToProps = state => (
     notes: state.notes,
     persons: state.persons,
     tasks: state.tasks,
+    currentProject: state.currentProject,
   }
 );
 
@@ -227,6 +241,7 @@ const mapDispatchToProps = dispatch => ({
   fetchPersons: value => dispatch(fetchPersons(value)),
   fetchTasks: value => dispatch(fetchTasks(value)),
   updateProject: value => dispatch(updateProject(value)),
+  setCurrentProject: value => dispatch(setCurrentProject(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

@@ -77,11 +77,11 @@ const Note = ({
         <Grid.Row>
           <Grid.Column key={1} width="8">
             Note
-            <Form>
+            <Form style={{ height: '100%', paddingBottom: 30 }}>
               <TextArea
                 onChange={onNoteChange}
                 placeholder="Type a note on markdown markup"
-                style={{ minHeight: 200 }}
+                style={{ minHeight: 200, height: '100%' }}
                 defaultValue={note.markdown}
               />
             </Form>

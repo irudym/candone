@@ -1,9 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown, Form, Button } from 'semantic-ui-react';
+import { Dropdown, Form, Button, Message } from 'semantic-ui-react';
 import CardHolder from './card_holder';
 
+import AddButton from './add_button';
 import * as SCHEMAS from '../../lib/schemas';
+import colors, { elements } from '../styles/colors';
+
+const blockStyle = {
+  background: elements.header,
+};
+
+const addButtonStyle = {
+  marginLeft: '16px',
+};
+
+const cardHolder = {
+  background: 'white',
+  margin: '20px 0 12px 0',
+  borderRadius: 3,
+  border: `1px solid ${colors.borderGray}`,
+};
 
 const TaskSelect = ({
   placeholder,
@@ -37,7 +54,7 @@ const TaskSelect = ({
   ));
 
   return (
-    <div>
+    <Message style={blockStyle}>
       <Form.Group inline>
         <label>{label}</label>
         <Dropdown
@@ -49,16 +66,18 @@ const TaskSelect = ({
           onChange={onChange}
           defaultValue={defaultValue}
         />
-        <Button color="green" onClick={onAdd}>Add a Task</Button>
+        <AddButton onClick={onAdd} title="Task" style={addButtonStyle} noicon />
       </Form.Group>
-      <CardHolder
-        todoTasks={todoTasks}
-        devTasks={devTasks}
-        doneTasks={doneTasks}
-        onClick={() => {}}
-        onDelete={onDelete}
-      />
-    </div>
+      <div style={cardHolder}>
+        <CardHolder
+          todoTasks={todoTasks}
+          devTasks={devTasks}
+          doneTasks={doneTasks}
+          onClick={() => {}}
+          onDelete={onDelete}
+        />
+      </div>
+    </Message>
   );
 };
 

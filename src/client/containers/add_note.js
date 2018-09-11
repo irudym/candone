@@ -10,6 +10,16 @@ import serverUrl from '../../globals/api_server';
 
 
 class AddNote extends Component {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log('NEW NOTE PROPS: ', nextProps);
+    return ({
+      markdown: nextProps.markdown,
+      note: {
+        markdown: nextProps.markdown,
+      },
+    });
+  }
+
   state = {
     markdown: '',
     title: '',
@@ -17,6 +27,9 @@ class AddNote extends Component {
     actions: [],
     action: {},
     participants: [],
+    note: {
+      markdown: null,
+    },
   };
 
   handleClose = () => {
@@ -130,6 +143,7 @@ class AddNote extends Component {
         onClose={this.handleClose}
         peopleOptions={peopleOptions}
         markdown={this.state.markdown}
+        note={this.state.note}
         onNoteChange={this.handleNoteChange}
         onCloseAddAction={this.handleCloseAddAction}
         onShowAddAction={this.handleShowAddAction}

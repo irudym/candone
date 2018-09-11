@@ -3,11 +3,15 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Form, TextArea, Button } from 'semantic-ui-react';
+import { Form, TextArea, Button } from 'semantic-ui-react';
 
+import Modal from '../modal'
+import SubmitButton from '../submit_button';
+import CancelButton from '../cancel_button';
 import TaskSelect from '../task_select';
 import NoteSelect from '../note_select';
 import PeopleSelect from '../people_select';
+import ActionsHolder from '../actions_holder';
 import * as SCHEMAS from '../../../lib/schemas';
 
 
@@ -34,8 +38,7 @@ const Project = ({
   notes,
   onAddNote,
 }) => (
-  <Modal dimmer="inverted" closeOnRootNodeClick={false} open={show} onClose={onClose} size="large" >
-    <Modal.Header>{viewTitle}</Modal.Header>
+  <Modal dimmer="inverted" closeOnRootNodeClick={false} open={show} onClose={onClose} size="large" title={viewTitle}>
     <Modal.Content>
       <Form>
         <Form.Input label="Title" placeholder="Project title" onChange={onTitleChange} defaultValue={project.title} />
@@ -50,15 +53,17 @@ const Project = ({
           notes={notes}
           onDelete={onDeleteNote}
         />
-        <TaskSelect
-          label="Task"
-          placeholder="Add A Task to the Project"
-          tasksOptions={tasksOptions}
-          onChange={onTaskSelect}
-          onAdd={onAddTask}
-          tasks={tasks}
-          onDelete={onDeleteTask}
-        />
+        <ActionsHolder>
+          <TaskSelect
+            label="Task"
+            placeholder="Add A Task to the Project"
+            tasksOptions={tasksOptions}
+            onChange={onTaskSelect}
+            onAdd={onAddTask}
+            tasks={tasks}
+            onDelete={onDeleteTask}
+          />
+        </ActionsHolder>
       </Form>
     </Modal.Content>
     <Modal.Actions>
@@ -67,12 +72,8 @@ const Project = ({
         :
         ''
       }
-      <Button color="blue" onClick={onSubmit} >
-        {submitTitle}
-      </Button>
-      <Button onClick={onClose} >
-        Cancel
-      </Button>
+      <SubmitButton onClick={onSubmit} title={submitTitle} />
+      <CancelButton onClick={onClose} />
     </Modal.Actions>
   </Modal>
 );

@@ -22,12 +22,14 @@ const noteStyle = {
 
 /**
  * Component to show notes cards
- * @param {[type]} notes      Note objects array
- * @param {[type]} onClick    OnClick on Note Card handler, called with note object as a parameter
- * @param {[type]} onDelete   Card Delete handler
- * @param {[type]} markdown   Markdown styled text to preview the note content
- * @param {[type]} selected   ID of selected note
- * @param {[type]} fullscreen Accomodate all width of the screen and don't show preview panel
+ * @param {[array]} notes      Note objects array
+ * @param {[func]} onClick    OnClick on Note Card handler, called with note object as a parameter
+ * @param {[func]} onDelete   Card Delete handler
+ * @param {[string]} markdown   Markdown styled text to preview the note content
+ * @param {[number]} selected   ID of selected note
+ * @param {[bool]} fullscreen Accomodate all width of the screen and don't show preview panel
+ * @param {[shape]} style     Additional CSS styles
+ * @param {func} onFollowup   onClick on FolloUp button
  */
 const NotesHolder = ({
   notes,
@@ -36,13 +38,22 @@ const NotesHolder = ({
   markdown,
   selected,
   fullscreen,
+  style,
+  onFollowup,
 }) => (
-  <Grid>
+  <Grid style={style}>
     <Grid.Row>
       <Grid.Column width={fullscreen ? null : 6}>
         <div style={cardHolderStyle}>
           { notes.map(note => (
-            <NoteCard key={note.id} note={note} onClick={onClick} onDelete={onDelete} selected={note.id === selected} />
+            <NoteCard
+              key={note.id}
+              note={note}
+              onClick={onClick}
+              onDelete={onDelete}
+              onFollowup={onFollowup}
+              selected={note.id === selected}
+            />
           ))}
         </div>
       </Grid.Column>
@@ -68,12 +79,14 @@ NotesHolder.propTypes = {
   markdown: PropTypes.string,
   selected: PropTypes.number,
   fullscreen: PropTypes.bool,
+  style: PropTypes.object,
 };
 
 NotesHolder.defaultProps = {
   markdown: null,
   selected: null,
   fullscreen: false,
+  style: {},
 };
 
 export default NotesHolder;

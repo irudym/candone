@@ -29,6 +29,7 @@ class People extends Component {
       description: '',
       person_type_id: -1,
     },
+    selected: null,
   }
 
   handleAddPersonShow = () => {
@@ -43,12 +44,20 @@ class People extends Component {
     });
   }
 
-  handlePersonClick = (id) => {
-    const currentPerson = this.props.persons.filter(e => e.id === id)[0];
-    if(currentPerson) {
+  handlePersonClick = (person) => {
+    const currentPerson = this.props.persons.find(e => e.id === person.id);
+
+    if (currentPerson) {
+      // in case of the second click on the note show the edit window
+      if (currentPerson.id === this.state.currentPerson.id) {
+        this.setState({
+          showEditPerson: true,
+        });
+      }
+      // if this is the first click, just show the markdown text of the selected not
       this.setState({
-        showEditPerson: true,
         currentPerson,
+        selected: currentPerson.id,
       });
     }
   }
@@ -57,7 +66,7 @@ class People extends Component {
     this.props.deletePerson({ url: serverUrl, person });
   }
 
-  handleEditPersonClose = () => this.setState({ showEditPerson: false});
+  handleEditPersonClose = () => this.setState({ showEditPerson: false });
 
   render() {
     return (
@@ -65,7 +74,7 @@ class People extends Component {
         <Header title="People">
           <Form>
             <Form.Group inline>
-              <AddButton onClick={this.handleAddPersonShow} title="Person"/>
+              <AddButton onClick={this.handleAddPersonShow} title="Person" />
               <SearchBar placeholder="Search a person..." />
             </Form.Group>
           </Form>
@@ -74,6 +83,8 @@ class People extends Component {
         <PeopleHolder
           onClick={this.handlePersonClick}
           onDelete={this.handlePersonDelete}
+          selected={this.state.selected}
+          person={this.state.currentPerson}
         />
         <EditPerson
           show={this.state.showEditPerson}
@@ -81,14 +92,14 @@ class People extends Component {
           onClose={this.handleEditPersonClose}
         />
       </AppContent>
-    )
+    );
   }
 }
 
 People.propTypes = {
-  persons: PropTypes.arrayOf(PropTypes.shape(SCHEMAS.person)),
+  persons: PropTypes.arrayOf(PropTypes.shape(SCHEMAS.person)).isRequired,
   deletePerson: PropTypes.func.isRequired,
-}
+};
 
 
 const mapStateToProps = state => (

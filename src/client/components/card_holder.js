@@ -44,7 +44,7 @@ const CardHolder = ({
   onDelete,
   fullscreen,
 }) => (
-  <Grid columns={fullscreen ? '1' : '3'} stackable>
+  <Grid columns={fullscreen ? '1' : '3'} stackable >
     <Grid.Row>
       <Grid.Column key="1" width={fullscreen ? '8' : '5'}>
         { fullscreen ?

@@ -29,7 +29,7 @@ const typeLineStyle = color => ({
   left: '36px',
   width: 3,
   background: color,
-  zIndex: 100,
+  zIndex: 2,
   padding: 1,
   borderRadius: 5,
 });

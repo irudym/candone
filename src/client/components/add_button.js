@@ -14,12 +14,17 @@ const buttonStyle = {
 };
 
 
-const AddButton = ({ title, onClick }) => {
+const AddButton = ({ title, onClick, style, noicon }) => {
   let article = 'a';
   if (title.toUpperCase().charAt(0) === 'A' || title.toUpperCase().charAt(0) === 'E') article = 'an';
   return (
-    <Button onClick={onClick} style={buttonStyle} className="candone-button">
-      <Icon name="plus" color={buttonStyle.color} />
+    <Button onClick={onClick} style={{ ...buttonStyle, ...style }} className="candone-button">
+      {
+        noicon ?
+        null
+        :
+        <Icon name="plus" color={buttonStyle.color} />
+      }
       Add {`${article} ${title}`}
     </Button>
   );
@@ -28,6 +33,14 @@ const AddButton = ({ title, onClick }) => {
 AddButton.propTypes = {
   title: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
+  style: PropTypes.object,
+  noicon: PropTypes.bool,
+};
+
+
+AddButton.defaultProps = {
+  style: {},
+  noicon: false,
 };
 
 export default AddButton;

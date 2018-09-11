@@ -39,3 +39,7 @@ input {
 .candone-card:hover .delete-icon {
   opacity: 1!important;
 }
+
+.candone-card:hover .followup-icon {
+  opacity: 1!important;
+}

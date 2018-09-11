@@ -75,7 +75,7 @@ export function* createTask(action) {
     );
     yield put({ type: TYPES.ADD_TASK, value: data });
     // in case project ID is provided, reload the corresponding project
-    const projectId =  action.payload.task.project_id;
+    const projectId = action.payload.task.project_id;
     if (projectId[0]) {
       yield reloadProject({ payload: { url: action.payload.url, id: projectId[0] } });
     }

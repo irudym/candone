@@ -174,4 +174,11 @@ export const reloadProject = value => (
   }
 );
 
+export const setCurrentProject = value => (
+  {
+    type: TYPES.SET_CURRENT_PROJECT,
+    value,
+  }
+);
+
 export default addPerson;

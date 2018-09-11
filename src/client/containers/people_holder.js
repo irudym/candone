@@ -23,6 +23,8 @@ class PeopleHolder extends React.Component {
         people={this.props.persons}
         onClick={this.props.onClick}
         onDelete={this.props.onDelete}
+        person={this.props.person}
+        selected={this.props.selected}
       />
     );
   }
@@ -34,6 +36,8 @@ PeopleHolder.propTypes = {
   fetchPersonTypes: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
+  person: PropTypes.shape(SCHEMAS.person).isRequired,
+  selected: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = state => (

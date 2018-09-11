@@ -11,7 +11,7 @@ const colors = {
   darkGrayBorder: '#788892',
   green: '#5ECDBD',
   greenBorder: '#52B2A4',
-  blue: '60BDF2',
+  blue: '#60BDF2',
   title: '#404D56',
   select: '#ED78D1',
   orange: '#F2C163',

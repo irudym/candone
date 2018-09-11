@@ -145,6 +145,12 @@ const ACTION_HANDLERS = {
       projects: state.projects.filter(project => project.id !== action.value.id),
     }
   ),
+  [TYPES.SET_CURRENT_PROJECT]: (state, action) => (
+    {
+      ...state,
+      currentProject: action.value,
+    }
+  ),
 };
 
 
@@ -158,6 +164,11 @@ export const initialState = {
   tasks: [],
   notes: [],
   projects: [],
+  currentProject: {
+    id: null,
+    tasks: [],
+    notes: [],
+  },
 };
 
 const candoneReducer = (state = initialState, action) => {

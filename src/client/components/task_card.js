@@ -19,7 +19,7 @@ const TaskCard = ({
       </Card.Header>
       <Card.Meta>
         <span className="date">
-          Created in {task.created_at}
+          {task.created_at}
         </span>
       </Card.Meta>
       <Card.Description>
