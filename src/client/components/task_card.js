@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ReactMarkdown from 'react-markdown';
 import Card from './card';
+
 
 import * as SCHEMAS from '../../lib/schemas';
 import colors from '../styles/colors';
@@ -23,7 +25,7 @@ const TaskCard = ({
         </span>
       </Card.Meta>
       <Card.Description>
-        {task.description}
+        <ReactMarkdown source={task.description} />
       </Card.Description>
     </Card.Content>
   </Card>

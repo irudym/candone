@@ -43,7 +43,10 @@ class EditTask extends React.Component {
     this.props.onClose();
   }
 
-  handleStageChange = (e, { value }) => this.setState({ stage: value})
+  handleStageChange = (e, { value }) => {
+    // console.log("E: ", e, " value: ", value);
+    this.setState({ stage: value });
+  }
 
   handleTaskUpdate = () => {
     // TODO: need to validate all fields before submit data to the API server
@@ -73,6 +76,7 @@ class EditTask extends React.Component {
         show={this.props.show}
         onClose={this.props.onClose}
         urgencyValue={this.state.urgency.toString()}
+        stageValue={this.state.stage}
         onUrgencyChange={this.handleUrgencyChange}
         peopleOptions={peopleOptions}
         onPeopleChange={this.handlePeopleChange}

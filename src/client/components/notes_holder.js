@@ -12,6 +12,7 @@ const cardHolderStyle = {
   border: `1px solid ${colors.borderGray}`,
   margin: 5,
   padding: '1rem',
+  height: '100%',
 };
 
 const noteStyle = {
@@ -41,7 +42,7 @@ const NotesHolder = ({
   style,
   onFollowup,
 }) => (
-  <Grid style={style}>
+  <Grid style={{ height: '100%', ...style }}>
     <Grid.Row>
       <Grid.Column width={fullscreen ? null : 6}>
         <div style={cardHolderStyle}>

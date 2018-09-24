@@ -8,10 +8,11 @@ import colors, { elements } from '../styles/colors';
 import * as SCHEMAS from '../../lib/schemas';
 
 const holderStyle = {
-  background: colors.gray,
-  border: `1px solid ${colors.borderGray}`,
+  // background: colors.gray,
+  // border: `1px solid ${colors.borderGray}`,
   margin: 8,
   padding: '1rem',
+  height: '100%',
 };
 
 const headerStyle = {
@@ -78,7 +79,7 @@ const ProjectHolder = ({
   fullscreen,
   selected,
 }) => (
-  <Grid columns={fullscreen ? '1' : '2'} stackable>
+  <Grid columns={fullscreen ? '1' : '2'} stackable style={{ height: '100%' }}>
     <Grid.Row>
       <ProjectColumn
         key="1"

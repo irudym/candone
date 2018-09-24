@@ -17,6 +17,7 @@ import CancelButton from '../cancel_button';
   * Universal component for Add, Edit
   * @param {string} viewTitle           modal dialog title, default value is 'Add a Task'
   * @param {string} urgencyValue        current urgency value
+  * @param {number} stageValue          current stage value
   * @param {array} peopleOptions        [description]
   * @param {func} onClose               dialog close handler
   * @param {bool} show                  show or hide the modal dialog
@@ -47,6 +48,7 @@ const Task = ({
   task,
   onDelete,
   onStageChange,
+  stageValue,
 }) => (
   <Modal dimmer="inverted" closeOnRootNodeClick={false} onClose={onClose} open={show} title={viewTitle}>
     <Modal.Content>
@@ -62,7 +64,7 @@ const Task = ({
         </Form.Group>
         <PeopleSelect label="People" placeholder="Add a person" peopleOptions={peopleOptions} onChange={onPeopleChange} defaultValue={task.persons} />
         {onStageChange ?
-          <StageSelect label="Stage" placegolder="Select a stage" onChange={onStageChange} defaultValue={task.stage} />
+          <StageSelect label="Stage" placeholder="Select a stage" onChange={onStageChange} stage={stageValue} defaultValue={task.stage} />
           :
           ''
         }
@@ -95,6 +97,7 @@ Task.propTypes = {
   submitTitle: PropTypes.string,
   onDelete: PropTypes.func,
   onStageChange: PropTypes.func,
+  stageValue: PropTypes.number.isRequired,
 };
 
 Task.defaultProps = {

@@ -22,7 +22,11 @@ const constructMarkdown = (participants, actions, markdown, persons) => {
     return '';
   }).join(', ');
   let actionsMd = actions.map(action => (
-    action.title
+    `${action.owners.map((person) => {
+      const name = persons.find(e => e.id === person);
+      if (name) return `**${name.first_name} ${name.last_name}**`;
+      return '**All**';
+    })} : ${action.title}`
   )).join('\n- ');
   if (actionsMd.length === 0) actionsMd = 'No actions';
   return `#### Participants: ${participantsMd}\n---\n${markdown}\n---\n#### Actions:\n- ${actionsMd}`;

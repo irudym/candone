@@ -33,6 +33,10 @@ input {
 }
 
 
+.candone-special-button:hover {
+  background: #52B2A4!important;
+}
+
 .candone-card {
 }
 

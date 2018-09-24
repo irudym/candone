@@ -10,6 +10,7 @@ const holderStyle = {
   border: `1px solid ${colors.borderGray}`,
   margin: 8,
   padding: '1rem',
+  height: '100%',
 };
 
 const borderlessHolderStyle = {
@@ -27,6 +28,17 @@ const headerStyle = {
   padding: '1rem',
 };
 
+const getGridColumns = (fullscreen, hideComplete) => {
+  if (fullscreen) return '1';
+  if (hideComplete) return '2';
+  return '3';
+};
+
+const getColumnWidth = (fullscreen, hideComplete) => {
+  if (fullscreen || hideComplete) return 7;
+  return 5;
+};
+
 /**
  * Component to show Task cards in corresponding columns
  * @param {array of Task objects} todoTasks array of Tasks with todo stage
@@ -35,6 +47,7 @@ const headerStyle = {
  * @param {func} onClick   handle click on a Task card (usually view/edit the task)
  * @param {func} onDelete  handle task delete
  * @param {bool} fullscreen   show only one row with todoTaks (just pass all task as todoTasks to show them all)
+ * @param {bool} hideComplete hide Complete column
  */
 const CardHolder = ({
   todoTasks,
@@ -43,10 +56,11 @@ const CardHolder = ({
   onClick,
   onDelete,
   fullscreen,
+  hideComplete,
 }) => (
-  <Grid columns={fullscreen ? '1' : '3'} stackable >
+  <Grid columns={getGridColumns(fullscreen, hideComplete)} stackable style={{ height: '100%' }}>
     <Grid.Row>
-      <Grid.Column key="1" width={fullscreen ? '8' : '5'}>
+      <Grid.Column key="1" width={getColumnWidth(fullscreen, hideComplete)}>
         { fullscreen ?
           null
           :
@@ -69,7 +83,7 @@ const CardHolder = ({
         null
         :
         <React.Fragment>
-          <Grid.Column key="2" width="5">
+          <Grid.Column key="2" width={getColumnWidth(fullscreen, hideComplete)}>
             <div style={headerStyle}>
               Development
             </div>
@@ -84,21 +98,25 @@ const CardHolder = ({
               ))}
             </div>
           </Grid.Column>
-          <Grid.Column key="3" width="5">
-            <div style={headerStyle}>
-              Done
-            </div>
-            <div style={holderStyle}>
-              {doneTasks.map(task => (
-                <TaskCard
-                  key={task.id}
-                  task={task}
-                  onClick={onClick}
-                  onDelete={onDelete}
-                />
-              ))}
-            </div>
-          </Grid.Column>
+          {hideComplete ?
+            null
+            :
+            <Grid.Column key="3" width="5">
+              <div style={headerStyle}>
+                Done
+              </div>
+              <div style={holderStyle}>
+                {doneTasks.map(task => (
+                  <TaskCard
+                    key={task.id}
+                    task={task}
+                    onClick={onClick}
+                    onDelete={onDelete}
+                  />
+                ))}
+              </div>
+            </Grid.Column>
+          }
         </React.Fragment>
       }
     </Grid.Row>
@@ -112,10 +130,12 @@ CardHolder.propTypes = {
   onClick: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   fullscreen: PropTypes.bool,
+  hideComplete: PropTypes.bool,
 };
 
 CardHolder.defaultProps = {
   fullscreen: false,
+  hideComplete: false,
 };
 
 export default CardHolder;

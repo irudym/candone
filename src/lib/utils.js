@@ -36,6 +36,6 @@ export const createFollowup = (note, tasks, persons) => (
       `***${persons.find(person => person.id === id).first_name} ${persons.find(person => person.id === id).last_name}***`
     )).join(', ');
     // console.log("FND ACTION: ", action);
-    return `${actionPersons}:${action.title} :: **${stage2string(action.stage)}**`;
+    return `${actionPersons} : ${action.title} :: **${stage2string(action.stage)}**`;
   }).join('\n\n')}\n\n---\n`
 );

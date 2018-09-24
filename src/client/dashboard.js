@@ -14,6 +14,7 @@ import EditTask from './containers/edit_task';
 import NotesHolder from './components/notes_holder';
 import AddButton from './components/add_button';
 import ProjectHolder from './components/project_holder';
+import SpecialButton from './components/special_button';
 
 import { createFollowup } from '../lib/utils';
 
@@ -41,6 +42,7 @@ class Dashboard extends Component {
     currentNote: null,
     currentTask: null,
     newMarkdown: null,
+    hideComplete: false,
   }
 
   componentDidMount() {
@@ -117,6 +119,8 @@ class Dashboard extends Component {
     });
   }
 
+  handleCompleteToggle = () => this.setState({ hideComplete: !this.state.hideComplete })
+
   render() {
     const { projects } = this.props;
     const todoTasks = [];
@@ -156,6 +160,7 @@ class Dashboard extends Component {
             <Grid.Column key="2" width="10">
               <div style={{ ...columnHeaderStyle, marginBottom: 7 }}>
                 Tasks
+                <SpecialButton title={`${this.state.hideComplete ? 'Show' : 'Hide'} Complete`} onClick={this.handleCompleteToggle} />
               </div>
               <AddButton title="Task" onClick={this.handleShowAddTask} />
               <CardHolder
@@ -164,6 +169,7 @@ class Dashboard extends Component {
                 doneTasks={doneTasks}
                 onDelete={this.handleDeleteTask}
                 onClick={this.handleShowEditTask}
+                hideComplete={this.state.hideComplete}
               />
             </Grid.Column>
             <Grid.Column key="3" width="3" style={{ marginLeft: -60 }}>
