@@ -14,6 +14,7 @@ import AddAction from '../add_action';
 import Modal from '../modal';
 import SubmitButton from '../submit_button';
 import CancelButton from '../cancel_button';
+import DeleteButton from '../delete_button';
 import CardHolder from '../card_holder';
 
 import colors from '../../styles/colors';
@@ -27,7 +28,7 @@ const actionsBlockStyle = {
   borderRadius: 3,
 };
 
-const Actions = ({ actions, onDelete }) => {
+const Actions = ({ actions, onDelete, people }) => {
   if (actions.length === 0) return null;
   return (
     <div style={actionsBlockStyle}>
@@ -39,6 +40,11 @@ const Actions = ({ actions, onDelete }) => {
 Actions.propTypes = {
   actions: PropTypes.arrayOf(PropTypes.object).isRequired,
   onDelete: PropTypes.func.isRequired,
+  peopleOptions: PropTypes.arrayOf(PropTypes.shape({
+    key: PropTypes.number,
+    value: PropTypes.number,
+    text: PropTypes.string,
+  })).isRequired,
 };
 
 const Note = ({
@@ -93,7 +99,7 @@ const Note = ({
         </Grid.Row>
       </Grid>
       <ActionsHolder>
-        <Actions actions={actions} onDelete={onDeleteAction} />
+        <Actions actions={actions} onDelete={onDeleteAction} people={peopleOptions} />
         <AddAction
           peopleOptions={peopleOptions}
           show={showAddAction}
@@ -107,7 +113,7 @@ const Note = ({
     </Modal.Content>
     <Modal.Actions>
       {onDelete ?
-        <Button floated="left" onClick={onDelete} color="red">Delete</Button>
+        <DeleteButton onClick={onDelete} />
         :
         ''
       }

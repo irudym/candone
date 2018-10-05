@@ -15,6 +15,8 @@ import NotesHolder from './components/notes_holder';
 import AddButton from './components/add_button';
 import ProjectHolder from './components/project_holder';
 import SpecialButton from './components/special_button';
+import YellowButton from './components/yellow_button';
+import ConfirmationDialog from './components/confirmation_dialog';
 
 import { createFollowup } from '../lib/utils';
 
@@ -43,6 +45,7 @@ class Dashboard extends Component {
     currentTask: null,
     newMarkdown: null,
     hideComplete: false,
+    showConfirmTaskDelete: false,
   }
 
   componentDidMount() {
@@ -97,9 +100,30 @@ class Dashboard extends Component {
   handleCloseEditTask = () => this.setState({ showEditTask: false });
 
   handleDeleteTask = (task) => {
+    this.setState({
+      currentTask: task,
+      showConfirmTaskDelete: true,
+    });
+  }
+
+  handleCreateNoteFollowup = (note) => {
+    console.log("CRT(follow up note): ", note);
+    const markdown = createFollowup(note, this.props.tasks, this.props.persons);
+    console.log('FOLLOWUP: ', markdown);
+
+    this.setState({
+      showAddNote: true,
+      newMarkdown: markdown,
+    });
+  }
+
+  handleConfirmDeleteTaskCancel = () => this.setState({ showConfirmTaskDelete: false });
+
+  handleConfirmedDeleteTask = () => {
+    const task = this.state.currentTask;
     const currentProject = {
-      ...this.state.currentProject,
-      tasks: this.state.currentProject.tasks.filter(elem => elem.id !== task.id),
+      ...this.props.currentProject,
+      tasks: this.props.currentProject.tasks.filter(elem => elem.id !== task.id),
     };
     this.props.setCurrentProject(currentProject);
     const project = {
@@ -107,15 +131,10 @@ class Dashboard extends Component {
     };
     // update project
     this.props.updateProject({ url: serverUrl, project });
-  }
-
-  handleCreateNoteFollowup = (note) => {
-    const markdown = createFollowup(note, this.props.tasks, this.props.persons);
-    console.log('FOLLOWUP: ', markdown);
 
     this.setState({
-      showAddNote: true,
-      newMarkdown: markdown,
+      showConfirmTaskDelete: false,
+      currentTask: null,
     });
   }
 
@@ -177,6 +196,7 @@ class Dashboard extends Component {
                 Notes
               </div>
               <AddButton title="Note" onClick={this.handleShowAddNote} />
+              <YellowButton title="Followup Note" onClick={() => this.handleCreateNoteFollowup({ actions: currentProject.tasks })} icon="recycle" />
               <NotesHolder
                 notes={currentProject.notes}
                 onClick={this.handleShowEditNote}
@@ -211,6 +231,12 @@ class Dashboard extends Component {
           task={this.state.currentTask}
           onClose={this.handleCloseEditTask}
           projectID={currentProject.id}
+        />
+        <ConfirmationDialog
+          title="Delete task? The task will be removed from the project however will be still presented in all tasks list."
+          onCancel={this.handleConfirmDeleteTaskCancel}
+          onConfirm={this.handleConfirmedDeleteTask}
+          show={this.state.showConfirmTaskDelete}
         />
       </AppContent>
     );

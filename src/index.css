@@ -32,9 +32,17 @@ input {
   color: #788892!important;
 }
 
+.candone-delete-button:hover {
+   background: #AF3242!important;
+}
+
 
 .candone-special-button:hover {
   background: #52B2A4!important;
+}
+
+.candone-yellow-button:hover {
+  background: #C79F53!important;
 }
 
 .candone-card {

@@ -20,6 +20,7 @@ const headerStyle = {
   fontWeight: 500,
   color: elements.title,
   fontSize: '1rem',
+  overflowX: 'hidden',
 };
 
 const typeLineStyle = color => ({
@@ -58,6 +59,7 @@ const descriptionStyle = {
   fontWeight: 400,
   fontSize: '0.86rem',
   color: elements.description,
+  overflowX: 'hidden',
 };
 
 const CardContent = ({ children, color, onDelete }) => (

@@ -5,6 +5,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Form, TextArea, Dropdown, Button } from 'semantic-ui-react';
 
+import DeleteButton from '../delete_button';
+
 import * as SCHEMAS from '../../../lib/schemas';
 
 const TypeSelect = ({ placeholder, typeOptions, onChange, defaultValue }) => (
@@ -73,7 +75,7 @@ const Person = ({
     </Modal.Content>
     <Modal.Actions>
       {onDelete ?
-        <Button floated="left" onClick={onDelete} color="red">Delete</Button>
+        <DeleteButton onClick={onDelete} />
         :
         ''
       }

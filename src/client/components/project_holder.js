@@ -11,7 +11,7 @@ const holderStyle = {
   // background: colors.gray,
   // border: `1px solid ${colors.borderGray}`,
   margin: 8,
-  padding: '1rem',
+  padding: 2,
   height: '100%',
 };
 

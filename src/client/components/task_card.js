@@ -13,6 +13,7 @@ const TaskCard = ({
   task,
   onClick,
   onDelete,
+  owners,
 }) => (
   <Card onClick={() => onClick(task)}>
     <Card.Content color={urgencyColors[task.urgency]} onDelete={() => { onDelete(task); }}>
@@ -22,6 +23,9 @@ const TaskCard = ({
       <Card.Meta>
         <span className="date">
           {task.created_at}
+        </span>
+        <span>
+          {owners ? owners.join(', ') : null}
         </span>
       </Card.Meta>
       <Card.Description>
@@ -35,11 +39,13 @@ TaskCard.propTypes = {
   task: PropTypes.shape(SCHEMAS.task).isRequired,
   onClick: PropTypes.func,
   onDelete: PropTypes.func,
+  owners: PropTypes.arrayOf(PropTypes.string),
 };
 
 TaskCard.defaultProps = {
   onClick: null,
   onDelete: null,
+  owners: null,
 };
 
 export default TaskCard;

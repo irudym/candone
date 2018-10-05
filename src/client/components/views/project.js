@@ -8,6 +8,7 @@ import { Form, TextArea, Button } from 'semantic-ui-react';
 import Modal from '../modal'
 import SubmitButton from '../submit_button';
 import CancelButton from '../cancel_button';
+import DeleteButton from '../delete_button';
 import TaskSelect from '../task_select';
 import NoteSelect from '../note_select';
 import PeopleSelect from '../people_select';
@@ -68,7 +69,7 @@ const Project = ({
     </Modal.Content>
     <Modal.Actions>
       {onDelete ?
-        <Button floated="left" onClick={onDelete} color="red">Delete</Button>
+        <DeleteButton onClick={onDelete} />
         :
         ''
       }

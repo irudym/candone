@@ -25,13 +25,24 @@ import rootSaga from './sagas/actions';
   */
   const sagaMiddleware = createSagaMiddleware();
 
-  const store = createStore(
-    candoneReducer,
-    initialState,
-    compose(
-      applyMiddleware(sagaMiddleware),
-      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),),
-  );
+  let store = null;
+  // Only chrome can handle the redux dev tool
+  // redux compose cannot handle a null or undefined middleware
+  if (window.navigator.userAgent.includes('Chrome')) {
+    store = createStore(
+      candoneReducer,
+      initialState,
+      compose(
+        applyMiddleware(sagaMiddleware),
+        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()),
+    );
+  } else {
+    store = createStore(
+      candoneReducer,
+      initialState,
+      compose(applyMiddleware(sagaMiddleware)),
+    );
+  }
 
   // run saga middleware
   sagaMiddleware.run(rootSaga);

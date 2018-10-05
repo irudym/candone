@@ -12,6 +12,7 @@ import StageSelect from '../stage_select';
 import Modal from '../modal';
 import SubmitButton from '../submit_button';
 import CancelButton from '../cancel_button';
+import DeleteButton from '../delete_button';
 
 /**
   * Universal component for Add, Edit
@@ -72,7 +73,7 @@ const Task = ({
     </Modal.Content>
     <Modal.Actions>
       {onDelete ?
-        <Button floated="left" onClick={onDelete} color="red">Delete</Button>
+        <DeleteButton onClick={onDelete} />
         :
         ''
       }

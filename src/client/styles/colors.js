@@ -17,6 +17,8 @@ const colors = {
   orange: '#F2C163',
   red: '#E54156',
   redBorder: '#AF3242',
+  yellow: '#F2C163',
+  yellowBorder: '#C79F53',
 };
 
 export const elements = {
@@ -33,6 +35,8 @@ export const elements = {
   header: colors.gray,
   buttonFontSize: '1rem',
   closeButton: colors.darkGray,
+  yellowButton: colors.yellow,
+  yellowButtonBorder: colors.yellowBorder,
 };
 
 export default colors;

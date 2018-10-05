@@ -39,6 +39,12 @@ const getColumnWidth = (fullscreen, hideComplete) => {
   return 5;
 };
 
+const getOwners = (ids, people) => {
+  console.log("IDS: ", ids);
+  console.log('People: ', people);
+  return ids ? ids.map(id => people.find(person => person.key === id)) : null;
+};
+
 /**
  * Component to show Task cards in corresponding columns
  * @param {array of Task objects} todoTasks array of Tasks with todo stage
@@ -48,6 +54,7 @@ const getColumnWidth = (fullscreen, hideComplete) => {
  * @param {func} onDelete  handle task delete
  * @param {bool} fullscreen   show only one row with todoTaks (just pass all task as todoTasks to show them all)
  * @param {bool} hideComplete hide Complete column
+ * @param {array of Objects} people array with people names and ids
  */
 const CardHolder = ({
   todoTasks,
@@ -57,6 +64,7 @@ const CardHolder = ({
   onDelete,
   fullscreen,
   hideComplete,
+  people,
 }) => (
   <Grid columns={getGridColumns(fullscreen, hideComplete)} stackable style={{ height: '100%' }}>
     <Grid.Row>
@@ -75,6 +83,7 @@ const CardHolder = ({
               task={task}
               onClick={onClick}
               onDelete={onDelete}
+              owners={getOwners(task.persons, people)}
             />
           ))}
         </div>
@@ -131,11 +140,17 @@ CardHolder.propTypes = {
   onDelete: PropTypes.func.isRequired,
   fullscreen: PropTypes.bool,
   hideComplete: PropTypes.bool,
+  people: PropTypes.arrayOf(PropTypes.shape({
+    key: PropTypes.number,
+    value: PropTypes.number,
+    text: PropTypes.string,
+  })),
 };
 
 CardHolder.defaultProps = {
   fullscreen: false,
   hideComplete: false,
+  people: [],
 };
 
 export default CardHolder;
