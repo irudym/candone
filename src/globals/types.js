@@ -7,6 +7,7 @@ export const ADD_TASK = 'TASKS/ADD';
 export const SET_TASKS = 'TASKS/SET';
 export const CHANGE_TASK = 'TASKS/CHANGE';
 export const REMOVE_TASK = 'TASKS/REMOVE'; // remove task from state (redux)
+export const HIDE_COMPLETE_TASKS = 'TASKS/HIDE_COMPLETE'; // hide complete tasks in dashboard view
 
 
 export const ADD_NOTE = 'NOTES/ADD';

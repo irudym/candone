@@ -20,7 +20,7 @@ import ConfirmationDialog from './components/confirmation_dialog';
 
 import { createFollowup } from '../lib/utils';
 
-import { fetchProjects, fetchNotes, fetchPersons, fetchTasks, updateProject, setCurrentProject } from '../redux/actions';
+import { fetchProjects, fetchNotes, fetchPersons, fetchTasks, updateProject, setCurrentProject, hideCompleteTasks } from '../redux/actions';
 
 import * as SCHEMAS from '../lib/schemas';
 import serverUrl from '../globals/api_server';
@@ -44,7 +44,6 @@ class Dashboard extends Component {
     currentNote: null,
     currentTask: null,
     newMarkdown: null,
-    hideComplete: false,
     showConfirmTaskDelete: false,
   }
 
@@ -121,16 +120,19 @@ class Dashboard extends Component {
 
   handleConfirmedDeleteTask = () => {
     const task = this.state.currentTask;
+
+    console.log('==================');
+    console.log('Delete task: ', task.id, 'from project: ', this.props.currentProject.title);
+    console.log('Project: ', this.props.currentProject);
     const currentProject = {
       ...this.props.currentProject,
       tasks: this.props.currentProject.tasks.filter(elem => elem.id !== task.id),
     };
     this.props.setCurrentProject(currentProject);
-    const project = {
-      ...currentProject,
-    };
+
+    console.log('Updated project: ', currentProject)
     // update project
-    this.props.updateProject({ url: serverUrl, project });
+    this.props.updateProject({ url: serverUrl, project: currentProject });
 
     this.setState({
       showConfirmTaskDelete: false,
@@ -138,7 +140,10 @@ class Dashboard extends Component {
     });
   }
 
-  handleCompleteToggle = () => this.setState({ hideComplete: !this.state.hideComplete })
+  handleCompleteToggle = () => {
+    this.props.hideCompleteTasks(!this.props.hideComplete);
+  }
+
 
   render() {
     const { projects } = this.props;
@@ -179,7 +184,7 @@ class Dashboard extends Component {
             <Grid.Column key="2" width="10">
               <div style={{ ...columnHeaderStyle, marginBottom: 7 }}>
                 Tasks
-                <SpecialButton title={`${this.state.hideComplete ? 'Show' : 'Hide'} Complete`} onClick={this.handleCompleteToggle} />
+                <SpecialButton title={`${this.props.hideComplete ? 'Show' : 'Hide'} Complete`} onClick={this.handleCompleteToggle} />
               </div>
               <AddButton title="Task" onClick={this.handleShowAddTask} />
               <CardHolder
@@ -188,7 +193,7 @@ class Dashboard extends Component {
                 doneTasks={doneTasks}
                 onDelete={this.handleDeleteTask}
                 onClick={this.handleShowEditTask}
-                hideComplete={this.state.hideComplete}
+                hideComplete={this.props.hideComplete}
               />
             </Grid.Column>
             <Grid.Column key="3" width="3" style={{ marginLeft: -60 }}>
@@ -255,6 +260,8 @@ Dashboard.propTypes = {
   updateProject: PropTypes.func.isRequired,
   setCurrentProject: PropTypes.func.isRequired,
   currentProject: PropTypes.object.isRequired,
+  hideComplete: PropTypes.bool.isRequired,
+  hideCompleteTasks: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => (
@@ -264,6 +271,7 @@ const mapStateToProps = state => (
     persons: state.persons,
     tasks: state.tasks,
     currentProject: state.currentProject,
+    hideComplete: state.hideCompleteTasks,
   }
 );
 
@@ -274,6 +282,7 @@ const mapDispatchToProps = dispatch => ({
   fetchTasks: value => dispatch(fetchTasks(value)),
   updateProject: value => dispatch(updateProject(value)),
   setCurrentProject: value => dispatch(setCurrentProject(value)),
+  hideCompleteTasks: value => dispatch(hideCompleteTasks(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

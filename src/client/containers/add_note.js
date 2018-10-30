@@ -14,8 +14,11 @@ class AddNote extends Component {
     console.log('NEW NOTE PROPS: ', nextProps);
     return ({
       markdown: nextProps.markdown,
+      participants: [],
+      actions: [],
       note: {
         markdown: nextProps.markdown,
+        // participants: [],
       },
     });
   }

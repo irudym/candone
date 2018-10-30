@@ -151,6 +151,12 @@ const ACTION_HANDLERS = {
       currentProject: action.value,
     }
   ),
+  [TYPES.HIDE_COMPLETE_TASKS]: (state, action) => (
+    {
+      ...state,
+      hideCompleteTasks: action.value,
+    }
+  ),
 };
 
 
@@ -169,6 +175,7 @@ export const initialState = {
     tasks: [],
     notes: [],
   },
+  hideCompleteTasks: false,
 };
 
 const candoneReducer = (state = initialState, action) => {

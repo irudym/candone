@@ -181,4 +181,11 @@ export const setCurrentProject = value => (
   }
 );
 
+export const hideCompleteTasks = value => (
+  {
+    type: TYPES.HIDE_COMPLETE_TASKS,
+    value,
+  }
+);
+
 export default addPerson;
