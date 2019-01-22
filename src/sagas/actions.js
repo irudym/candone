@@ -90,7 +90,7 @@ export function* fetchTasks(action) {
     const data = yield call(API.fetchTasks, action.payload.url);
     yield put({ type: TYPES.SET_TASKS, value: data });
   } catch (error) {
-    const errors = `Cannot fetch persons data from URL: ${action.payload.url}: ${error}`;
+    const errors = `Cannot fetch task data from URL: ${action.payload.url}: ${error}`;
     yield put({ type: TYPES.FETCH_FAILED, errors: [errors] });
   }
 }
@@ -118,6 +118,22 @@ export function* deleteTask(action) {
     yield put({ type: TYPES.DELETE_FAILED, errors: [errors] });
   }
 }
+
+
+/*
+
+// action: payload: {url, id}
+export function* getTask(action) {
+  try {
+    const data = yield call(API.getTask({ ...action.payload }));
+    return data;
+  } catch (error) {
+    const errors = `Cannot get task: ${action.payload.task.id} due to: ${error}`;
+    yield put({ type: TYPES.FETCH_FAILED, errors: [errors] });
+  }
+  return null;
+}
+*/
 
 export function* fetchNotes(action) {
   try {

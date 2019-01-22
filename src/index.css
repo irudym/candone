@@ -55,3 +55,40 @@ input {
 .candone-card:hover .followup-icon {
   opacity: 1!important;
 }
+
+.candone-icon {
+  // fill: #60BDF2;
+}
+
+.candone-icon:hover {
+  fill: #39748E!important;
+}
+
+.cls-1 {
+  fill:none;
+}
+
+.cls-3 {
+  fill:none;
+}
+
+.cls-1, .cls-2, .cls-3 {
+  stroke:#60bdf2;
+  stroke-linejoin:round;
+  stroke-width:1px;
+}
+
+.cls-2 {
+  fill:#60bdf2;
+}
+
+.cls-3 {
+  stroke-linecap:round;
+}
+
+svg {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0) scale(1.0, 1.0);
+  transform: translateZ(0);
+}

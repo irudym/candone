@@ -111,6 +111,14 @@ export const deleteTask = async ({ url, task }) => {
   return response;
 };
 
+export const getTask = async ({ url, id }) => {
+  const response = await fetch(`${url}/tasks/${id}`, {
+    method: 'GET',
+  });
+  const data = await response.json();
+  return data;
+};
+
 /**
  * Notes
  */
@@ -153,6 +161,14 @@ export const deleteNote = async ({ url, note }) => {
     method: 'DELETE',
   });
   return response;
+};
+
+export const getNote = async ({ url, id }) => {
+  const response = await fetch(`${url}/notes/${id}`, {
+    method: 'GET',
+  });
+  const data = await response.json();
+  return data;
 };
 
 /**

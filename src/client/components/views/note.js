@@ -73,7 +73,7 @@ const Note = ({
       <Form>
         <PeopleSelect
           label="Participants"
-          placeholder="Select participants of interested people..."
+          placeholder="Select participants or interested people..."
           peopleOptions={peopleOptions}
           onChange={onParticipantsChange}
           defaultValue={note.participants}
@@ -94,7 +94,9 @@ const Note = ({
           </Grid.Column>
           <Grid.Column key={2} width="8">
             Preview
-            <ReactMarkdown source={markdown} />
+            <div style={{ overflowX: 'hidden' }} >
+              <ReactMarkdown source={markdown} />
+            </div>
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -108,7 +110,7 @@ const Note = ({
           onTextChange={onActionTextChange}
           onOwnerChange={onActionOwnerChange}
         />
-        <AddButton title="action" onClick={onShowAddAction} />
+        {showAddAction ? null : <AddButton title="action" onClick={onShowAddAction} />}
       </ActionsHolder>
     </Modal.Content>
     <Modal.Actions>

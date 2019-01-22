@@ -13,9 +13,12 @@ import * as SCHEMAS from '../../lib/schemas';
 class EditNote extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     console.log('NEW NOTE PROPS: ', nextProps);
-    return ({
-      note: nextProps.note,
-    });
+    if (nextProps.note && nextProps.note.id !== prevState.note.id) {
+      return ({
+        note: nextProps.note,
+      });
+    }
+    return null;
   }
 
   state = {
@@ -151,6 +154,7 @@ class EditNote extends React.Component {
 
   render() {
     if (!this.state.note) return null;
+    if (!this.props.note) return null;
     const peopleOptions = this.props.persons.map(person => (
       {
         id: 1,

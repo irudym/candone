@@ -15,11 +15,15 @@ class EditProject extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     console.log('NEW PROJECT PROPS: ', nextProps);
     const tasksOptions = toOptionsList(nextProps.tasks);
-    // update state values
-    return ({
-      project: nextProps.project,
-      tasksOptions,
-    });
+
+    if (nextProps.project && nextProps.project.id !== prevState.project.id) {
+      // update state values
+      return ({
+        project: nextProps.project,
+        tasksOptions,
+      });
+    }
+    return null;
   }
 
   initialState = {

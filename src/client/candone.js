@@ -14,19 +14,19 @@ const sideMenuItems = [
     id: 101,
     title: 'projects',
     link: '/projects',
-    icon: 'setting',
+    icon: 'projects',
   },
   {
     id: 102,
     title: 'tasks',
     link: '/tasks',
-    icon: 'browser',
+    icon: 'tasks',
   },
   {
     id: 103,
     title: 'notes',
     link: '/notes',
-    icon: 'file text outline',
+    icon: 'notes',
   },
   {
     id: 104,

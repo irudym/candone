@@ -12,20 +12,27 @@ import serverUrl from '../../globals/api_server';
 class AddNote extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     console.log('NEW NOTE PROPS: ', nextProps);
-    return ({
-      markdown: nextProps.markdown,
-      participants: [],
-      actions: [],
-      note: {
+    console.log("===> prevState: ", prevState);
+    if (nextProps.id !== prevState.id) {
+      console.log('NEW NOTE PROPS: set new markdown: ', nextProps.markdown);
+      return ({
         markdown: nextProps.markdown,
-        // participants: [],
-      },
-    });
+        participants: [],
+        actions: [],
+        action: {},
+        note: {
+          markdown: nextProps.markdown,
+          // participants: [],
+        },
+        id: nextProps.id,
+      });
+    }
+    return null;
   }
 
   state = {
     markdown: '',
-    title: '',
+    // title: '',
     showAddAction: false,
     actions: [],
     action: {},
@@ -33,12 +40,20 @@ class AddNote extends Component {
     note: {
       markdown: null,
     },
+    id: null,
   };
 
   handleClose = () => {
     this.setState({
       markdown: '',
       showAddAction: false,
+      actions: [],
+      action: {},
+      note: {
+        id: null,
+        participants: [],
+        actions: [],
+      },
     });
     this.props.onClose();
   }
@@ -171,10 +186,12 @@ AddNote.propTypes = {
   createNote: PropTypes.func.isRequired,
   projectID: PropTypes.number,
   reloadProject: PropTypes.func.isRequired,
+  id: PropTypes.number,
 };
 
 AddNote.defaultProps = {
   projectID: null,
+  id: null,
 };
 
 const mapStateToProps = state => (

@@ -2,7 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import Radium from 'radium';
 import { NavLink } from 'react-router-dom';
-import { Icon } from 'semantic-ui-react';
+// import { Icon } from 'semantic-ui-react';
+
+import { Icon as CandoneIcon } from './icon';
+
 
 import layout, { mediaStyles } from '../styles/layout';
 import colors from '../styles/colors';
@@ -66,7 +69,7 @@ class SideMenuItem extends React.Component {
         <div style={menuStyle.item} key={item.id}>
           <li style={menuStyle.list}>
             <div style={menuStyle.icon}>
-              <Icon name={item.icon} />
+              <CandoneIcon name={item.icon} />
             </div>
           </li>
         </div>

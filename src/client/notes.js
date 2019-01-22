@@ -12,6 +12,7 @@ import EditNote from './containers/edit_note';
 
 import { deleteNote } from '../redux/actions';
 import serverUrl from '../globals/api_server';
+import { getNote } from '../lib/api';
 
 import * as SCHEMAS from '../lib/schemas';
 
@@ -61,26 +62,30 @@ class Notes extends Component {
 
   handleNoteClick = (note) => {
     // TODO: pass the note as an argument from NoteCard
-    const currentNote = this.props.notes.find(e => e.id === note.id);
+    const selectedNote = this.props.notes.find(e => e.id === note.id);
 
-    if (currentNote) {
+    if (selectedNote) {
       // in case of the second click on the note show the edit window
-      if (currentNote.id === this.state.currentNote.id) {
+      if (selectedNote.id === this.state.currentNote.id) {
         this.setState({
           showEditNote: true,
         });
+        return;
       }
-      // if this is the first click, just show the markdown text of the seleected note
-      const markdown = constructMarkdown(
-        currentNote.participants,
-        currentNote.actions,
-        currentNote.markdown,
-        this.props.persons,
-      );
-      this.setState({
-        currentNote,
-        markdown,
-        selected: currentNote.id,
+      // load the note from API server
+      getNote({ url: serverUrl, id: note.id }).then((currentNote) => {
+        // if this is the first click, just show the markdown text of the seleected note
+        const markdown = constructMarkdown(
+          currentNote.participants,
+          currentNote.actions,
+          currentNote.markdown,
+          this.props.persons,
+        );
+        this.setState({
+          currentNote,
+          markdown,
+          selected: currentNote.id,
+        });
       });
     }
   }

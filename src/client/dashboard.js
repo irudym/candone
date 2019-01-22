@@ -21,6 +21,7 @@ import ConfirmationDialog from './components/confirmation_dialog';
 import { createFollowup } from '../lib/utils';
 
 import { fetchProjects, fetchNotes, fetchPersons, fetchTasks, updateProject, setCurrentProject, hideCompleteTasks } from '../redux/actions';
+import { getTask, getNote } from '../lib/api';
 
 import * as SCHEMAS from '../lib/schemas';
 import serverUrl from '../globals/api_server';
@@ -45,6 +46,7 @@ class Dashboard extends Component {
     currentTask: null,
     newMarkdown: null,
     showConfirmTaskDelete: false,
+    noteId: null,
   }
 
   componentDidMount() {
@@ -56,22 +58,16 @@ class Dashboard extends Component {
 
   handleProjectSelect = (project) => {
     // put notes to the projects
-    console.log("PRJ: ", project);
     this.props.setCurrentProject(project);
   }
 
   handleShowEditNote = (note) => {
-    // as soon the app loads all data to memory let's find the note in the records
-    // TODO: need to implement the right way to handle errors!
-    const currentNote = this.props.notes.find(elem => elem.id === note.id) || {
-      ...note,
-      markdown: `### ERROR! Cannot find the note in records\n---\nNote title: ${note.title}`,
-      actions: [],
-    };
-    this.setState({
-      currentNote,
-      showEditNote: true,
-    });
+    // TODO: Neet to handle exceptions in case of bad request
+    getNote({ url: serverUrl, id: note.id }).then(data =>
+      this.setState({
+        currentNote: data,
+        showEditNote: true,
+      }));
   }
 
   handleCloseEditNote = () => this.setState({ showEditNote: false });
@@ -85,15 +81,19 @@ class Dashboard extends Component {
     newMarkdown: null,
   });
 
-  handleCloseAddNote = () => this.setState({ showAddNote: false });
+  handleCloseAddNote = () => this.setState({ showAddNote: false, newMarkdown: '', noteId: null });
 
 
   handleShowEditTask = (task) => {
     console.log('DSBRD: showTask: ', task);
-    this.setState({
-      currentTask: task,
-      showEditTask: true,
-    });
+    // console.log('DSBRD: showTask => currentTask)', currentTask.next());
+
+    // load data from API server
+    getTask({ url: serverUrl, id: task.id }).then(data =>
+      this.setState({
+        currentTask: data,
+        showEditTask: true,
+      }));
   }
 
   handleCloseEditTask = () => this.setState({ showEditTask: false });
@@ -106,13 +106,14 @@ class Dashboard extends Component {
   }
 
   handleCreateNoteFollowup = (note) => {
-    console.log("CRT(follow up note): ", note);
+    console.log('CRT(follow up note): ', note);
     const markdown = createFollowup(note, this.props.tasks, this.props.persons);
     console.log('FOLLOWUP: ', markdown);
 
     this.setState({
       showAddNote: true,
       newMarkdown: markdown,
+      noteId: 0,
     });
   }
 
@@ -224,6 +225,7 @@ class Dashboard extends Component {
           onClose={this.handleCloseAddNote}
           projectID={currentProject.id}
           markdown={this.state.newMarkdown}
+          id={this.state.noteId}
         />
         <EditNote
           show={this.state.showEditNote}

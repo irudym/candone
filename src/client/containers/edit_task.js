@@ -13,26 +13,28 @@ class EditTask extends React.Component {
   state = {
     urgency: 0,
     id: null,
+    stage: 0,
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log("NEW PROPS: ", nextProps);
+    console.log("EditTask:: NEW PROPS: ", nextProps);
     // update state values
-    // if (nextProps.task.id !== prevState.id) {
-    return ({
-      ...nextProps.task,
-    });
-    // }
-    // return null;
+    if (nextProps.task && nextProps.task.id !== prevState.id) {
+      return ({
+        ...nextProps.task,
+      });
+    }
+    return null;
   }
+
 
   handleUrgencyChange = (e, { value }) => this.setState({ urgency: value });
 
   handlePeopleChange = (e, { value }) => this.setState({ persons: value });
 
-  handleTitleChange = (e) => this.setState({ title: e.target.value})
+  handleTitleChange = e => this.setState({ title: e.target.value });
 
-  handleDescriptionChange = (e) => this.setState({ description: e.target.value })
+  handleDescriptionChange = e => this.setState({ description: e.target.value });
 
   handleTaskDelete = () => {
     console.log('Delete task with ID: ', this.state.id);
@@ -44,7 +46,7 @@ class EditTask extends React.Component {
   }
 
   handleStageChange = (e, { value }) => {
-    // console.log("E: ", e, " value: ", value);
+    // console.log("EditTask:: E: ", e, " value: ", value);
     this.setState({ stage: value });
   }
 
@@ -57,6 +59,14 @@ class EditTask extends React.Component {
       task: { ...this.state, project_id: [this.props.projectID] },
     });
 
+    this.props.onClose();
+  }
+
+  handleClose = () => {
+    // clear EditTask state
+    this.setState({
+      id: null,
+    });
     this.props.onClose();
   }
 
@@ -74,7 +84,7 @@ class EditTask extends React.Component {
       <TaskView
         viewTitle="Edit the Task"
         show={this.props.show}
-        onClose={this.props.onClose}
+        onClose={this.handleClose}
         urgencyValue={this.state.urgency.toString()}
         stageValue={this.state.stage}
         onUrgencyChange={this.handleUrgencyChange}

@@ -14,7 +14,12 @@ const buttonStyle = {
 };
 
 
-const AddButton = ({ title, onClick, style, noicon }) => {
+const AddButton = ({
+  title,
+  onClick,
+  style,
+  noicon,
+}) => {
   let article = 'a';
   if (title.toUpperCase().charAt(0) === 'A' || title.toUpperCase().charAt(0) === 'E') article = 'an';
   return (
