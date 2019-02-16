@@ -188,4 +188,11 @@ export const hideCompleteTasks = value => (
   }
 );
 
+export const addNoteToProject = value => (
+  {
+    type: TYPES.ADD_NOTE_TO_PROJECT,
+    value,
+  }
+);
+
 export default addPerson;

@@ -7,6 +7,8 @@ import TaskView from '../components/views/task';
 import serverUrl from '../../globals/api_server';
 import * as SCHEMAS from '../../lib/schemas';
 
+import { getTodayDate } from '../../lib/utils';
+
 class EditTask extends React.Component {
   // TODO: need to keep all task related records in separated object task:{} as
   // I'm going to store errors in the component state
@@ -17,7 +19,7 @@ class EditTask extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log("EditTask:: NEW PROPS: ", nextProps);
+    // console.log("EditTask:: NEW PROPS: ", nextProps);
     // update state values
     if (nextProps.task && nextProps.task.id !== prevState.id) {
       return ({
@@ -37,7 +39,7 @@ class EditTask extends React.Component {
   handleDescriptionChange = e => this.setState({ description: e.target.value });
 
   handleTaskDelete = () => {
-    console.log('Delete task with ID: ', this.state.id);
+    // console.log('Delete task with ID: ', this.state.id);
     this.props.deleteTask({
       url: serverUrl,
       task: this.state,
@@ -54,9 +56,12 @@ class EditTask extends React.Component {
     // TODO: need to validate all fields before submit data to the API server
     // validate()
     if (this.state.id === null) return;
+
+    const description = this.state.description.replace(/\[today\]/g, getTodayDate());
+
     this.props.updateTask({
       url: serverUrl,
-      task: { ...this.state, project_id: [this.props.projectID] },
+      task: { ...this.state, description, project_id: [this.props.projectID] },
     });
 
     this.props.onClose();

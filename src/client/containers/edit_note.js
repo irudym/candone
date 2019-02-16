@@ -9,6 +9,8 @@ import serverUrl from '../../globals/api_server';
 import NoteView from '../components/views/note';
 import * as SCHEMAS from '../../lib/schemas';
 
+import { getTodayDate } from '../../lib/utils';
+
 
 class EditNote extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -134,10 +136,13 @@ class EditNote extends React.Component {
     }
     // call action
     const { note } = this.state;
-    console.log('UPDATE_NOTE: ', note);
+
+    // replace markups
+    let new_markdown = note.markdown.replace(/\[today\]/g, getTodayDate());
+    
     this.props.updateNote({
       url: serverUrl,
-      note: { ...note, project_id: [this.props.projectID] },
+      note: { ...note, markdown: new_markdown, project_id: [this.props.projectID] },
     });
 
     this.props.onClose();

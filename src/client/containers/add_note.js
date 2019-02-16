@@ -8,6 +8,8 @@ import NoteView from '../components/views/note';
 import { createNote, reloadProject } from '../../redux/actions';
 import serverUrl from '../../globals/api_server';
 
+import { getTodayDate } from '../../lib/utils';
+
 
 class AddNote extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -125,19 +127,14 @@ class AddNote extends Component {
 
   handleAddNote = () => {
     // upload data to server
-    console.log("Adding Note with following items:");
-    console.log("===> actions: ", this.state.actions);
-    console.log("===> participants: ", this.state.participants);
-    console.log("===> markdown: ", this.state.markdown);
-    console.log("====== END ======");
-
     if (this.validates()) {
+      const markdown = this.state.markdown.replace(/\[today\]/g, getTodayDate());
       this.props.createNote({
         url: serverUrl,
         note: {
           participants: this.state.participants,
           actions: this.state.actions,
-          markdown: this.state.markdown,
+          markdown,
           project_id: [this.props.projectID],
         },
       });
@@ -187,6 +184,7 @@ AddNote.propTypes = {
   projectID: PropTypes.number,
   reloadProject: PropTypes.func.isRequired,
   id: PropTypes.number,
+  addNoteToProject: PropTypes.func.isRequired,
 };
 
 AddNote.defaultProps = {

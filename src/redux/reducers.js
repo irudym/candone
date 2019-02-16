@@ -4,6 +4,7 @@
  * Igor Rudym (C) 2018
  */
 import * as TYPES from '../globals/types';
+import { toIDList } from '../lib/utils';
 
 // Action handlers
 const ACTION_HANDLERS = {
@@ -137,6 +138,7 @@ const ACTION_HANDLERS = {
         if (project.id === action.value.id) return action.value;
         return project;
       }),
+      currentProject: action.value.id === state.currentProject.id ? action.value : state.currentProject,
     }
   ),
   [TYPES.REMOVE_PROJECT]: (state, action) => (
@@ -155,6 +157,21 @@ const ACTION_HANDLERS = {
     {
       ...state,
       hideCompleteTasks: action.value,
+    }
+  ),
+  [TYPES.ADD_NOTE_TO_PROJECT]: (state, action) => (
+    {
+      ...state,
+      projects: state.projects.map((project) => {
+        if (project.id === action.value.projectID) return ({
+          ...project,
+          notes: [
+            ...project.notes,
+            action.value.note,
+          ],
+        });
+        return project;
+      }),
     }
   ),
 };

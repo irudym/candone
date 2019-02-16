@@ -153,8 +153,19 @@ export function* createNote(action) {
     );
     yield put({ type: TYPES.ADD_NOTE, value: data });
 
-    // in case project ID is provided, reload the corresponding project
+    // in case project ID is provided,
     const projectId = action.payload.note.project_id;
+    // add the note to the project
+    /* DEPRECATED changed to reloadProject
+    yield put({
+      type: TYPES.ADD_NOTE_TO_PROJECT,
+      value: {
+        projectID: projectId[0],
+        note: data,
+      },
+    });
+    */
+    // reload the corresponding project
     if (projectId[0]) {
       yield reloadProject({ payload: { url: action.payload.url, id: projectId[0] } });
     }

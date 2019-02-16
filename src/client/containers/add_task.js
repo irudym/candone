@@ -8,6 +8,8 @@ import { fetchPersons, createTask } from '../../redux/actions';
 import * as SCHEMAS from '../../lib/schemas';
 import serverUrl from '../../globals/api_server';
 
+import { getTodayDate } from '../../lib/utils';
+
 class AddTask extends React.Component {
   // TODO: move task related fields to separated object 'task' inside Component state
   initialState = {
@@ -51,9 +53,10 @@ class AddTask extends React.Component {
   handleAddTask = () => {
     console.log("Add task: ", this.state);
     if (this.validates()) {
+      const description = this.state.description.replace(/\[today\]/g, getTodayDate());
       this.props.createTask({
         url: serverUrl,
-        task: { ...this.state, project_id: [this.props.projectID] },
+        task: { ...this.state, description, project_id: [this.props.projectID] },
       });
 
       // in case Project ID provided: reload projects to apply changes into Redux state

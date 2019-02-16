@@ -62,7 +62,7 @@ class Dashboard extends Component {
   }
 
   handleShowEditNote = (note) => {
-    // TODO: Neet to handle exceptions in case of bad request
+    // TODO: Need to handle exceptions in case of bad request
     getNote({ url: serverUrl, id: note.id }).then(data =>
       this.setState({
         currentNote: data,
@@ -131,7 +131,7 @@ class Dashboard extends Component {
     };
     this.props.setCurrentProject(currentProject);
 
-    console.log('Updated project: ', currentProject)
+    console.log('Updated project: ', currentProject);
     // update project
     this.props.updateProject({ url: serverUrl, project: currentProject });
 
@@ -147,16 +147,20 @@ class Dashboard extends Component {
 
 
   render() {
-    const { projects } = this.props;
+    const { projects } = this.props || [];
     const todoTasks = [];
     const devTasks = [];
     const doneTasks = [];
 
+    console.log('Project is: ', projects);
+    
     // update current project records
+    console.log('DASHBOARD: projects:', projects);
+    
     const currentProject = projects.find(project => (project.id === this.props.currentProject.id)) || { tasks: [], notes: [] };
 
     console.log('It seems that project was reloaded: ', currentProject);
-    // fill corersponding arrays with tasks
+    // fill corresponding arrays with tasks
     if (currentProject.tasks) {
       currentProject.tasks.map((task) => {
         switch (task.stage) {
