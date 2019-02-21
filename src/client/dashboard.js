@@ -206,7 +206,7 @@ class Dashboard extends Component {
                 Notes
               </div>
               <AddButton title="Note" onClick={this.handleShowAddNote} />
-              <YellowButton title="Followup Note" onClick={() => this.handleCreateNoteFollowup({ actions: currentProject.tasks })} icon="recycle" />
+              <YellowButton title="Followup Note" onClick={() => this.handleCreateNoteFollowup({ actions: currentProject.tasks.filter(task => task.stage < 2) })} icon="recycle" />
               <NotesHolder
                 notes={currentProject.notes}
                 onClick={this.handleShowEditNote}
