@@ -34,6 +34,8 @@ class EditNote extends React.Component {
     errors: [],
     showAddAction: false,
     action: {},
+    preview: true,
+    textInput: null,
   }
 
   handleClose = () => {
@@ -41,6 +43,7 @@ class EditNote extends React.Component {
     this.setState({
       errors: [],
       showAddAction: false,
+      preview: true,
     });
     this.props.onClose();
   }
@@ -50,7 +53,7 @@ class EditNote extends React.Component {
       note: {
         ...this.state.note,
         markdown: e.target.value,
-      }
+      },
     });
   }
 
@@ -145,7 +148,8 @@ class EditNote extends React.Component {
       note: { ...note, markdown: new_markdown, project_id: [this.props.projectID] },
     });
 
-    this.props.onClose();
+    // this.props.onClose();
+    this.handleClose();
   }
 
   handleNoteDelete = () => {
@@ -156,6 +160,9 @@ class EditNote extends React.Component {
     });
     this.props.onClose();
   }
+
+  handleEditNote = () => this.setState({ preview: false });
+
 
   render() {
     if (!this.state.note) return null;
@@ -188,6 +195,8 @@ class EditNote extends React.Component {
         note={this.props.note}
         submitTitle="Update"
         viewTitle="Edit the Note"
+        preview={this.state.preview}
+        onEdit={this.handleEditNote}
       />
     );
   }

@@ -11,13 +11,14 @@ import PeopleSelect from '../people_select';
 import ActionsHolder from '../actions_holder';
 import AddButton from '../add_button';
 import AddAction from '../add_action';
+import EditButton from '../edit_button';
 import Modal from '../modal';
 import SubmitButton from '../submit_button';
 import CancelButton from '../cancel_button';
 import DeleteButton from '../delete_button';
 import CardHolder from '../card_holder';
 
-import colors from '../../styles/colors';
+import colors, { elements } from '../../styles/colors';
 
 // import { toIDList } from '../../../lib/utils';
 
@@ -26,6 +27,11 @@ const actionsBlockStyle = {
   border: `1px solid ${colors.borderGray}`,
   marginBottom: 15,
   borderRadius: 3,
+};
+
+const headerStyle = {
+  padding: '1rem 0',
+  color: elements.title,
 };
 
 const Actions = ({ actions, onDelete, people }) => {
@@ -67,6 +73,8 @@ const Note = ({
   onActionOwnerChange,
   onDelete,
   note,
+  preview,
+  onEdit,
 }) => (
   <Modal dimmer="inverted" closeOnRootNodeClick={false} open={show} onClose={onClose} size="large" title={viewTitle} >
     <Modal.Content>
@@ -79,22 +87,36 @@ const Note = ({
           defaultValue={note.participants}
         />
       </Form>
-      <Grid columns="2" stackable>
+      <Grid columns={preview ? '1' : '2'} stackable>
         <Grid.Row>
-          <Grid.Column key={1} width="8">
-            Note
-            <Form style={{ height: '100%', paddingBottom: 30 }}>
-              <TextArea
-                onChange={onNoteChange}
-                placeholder="Type a note on markdown markup"
-                style={{ minHeight: 200, height: '100%' }}
-                defaultValue={note.markdown}
-              />
-            </Form>
-          </Grid.Column>
+          {preview ?
+          null :
+          (
+            <Grid.Column key={1} width="8">
+              <div style={headerStyle}>
+                Note
+              </div>
+              <Form style={{ height: '100%', paddingBottom: 30 }}>
+                <TextArea
+                  onChange={onNoteChange}
+                  placeholder="Type a note on markdown markup"
+                  style={{ minHeight: 200, height: '100%' }}
+                  defaultValue={note.markdown}
+                  autoFocus
+                />
+              </Form>
+            </Grid.Column>
+          )}
           <Grid.Column key={2} width="8">
-            Preview
-            <div style={{ overflowX: 'hidden' }} >
+            <div style={headerStyle}>
+              {preview ? (
+                  <EditButton onClick={onEdit} title="Edit note" />
+                )
+                : 
+                'Preview'
+              }
+            </div>
+            <div style={{ overflowX: 'hidden' }} onDoubleClick={onEdit}>
               <ReactMarkdown source={markdown} />
             </div>
           </Grid.Column>
@@ -149,6 +171,8 @@ Note.propTypes = {
   submitTitle: PropTypes.string,
   onDelete: PropTypes.func,
   note: PropTypes.shape(SCHEMAS.note),
+  preview: PropTypes.bool,
+  onEdit: PropTypes.func.isRequired,
 };
 
 Note.defaultProps = {
@@ -163,6 +187,7 @@ Note.defaultProps = {
     actions: null,
   },
   markdown: '',
+  preview: false,
 };
 
 export default Note;

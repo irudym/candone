@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 
 const holderStyle = {
-  margin: '1rem 0',
+  margin: '2rem 0',
 };
 
 const ActionsHolder = ({ children }) => (
