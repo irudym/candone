@@ -11,13 +11,32 @@ import * as SCHEMAS from '../../lib/schemas';
 
 import { getTodayDate } from '../../lib/utils';
 
+const markdownReplaces = (markdown) => {
+  // replace [today] markups
+    // eslint-disable-next-line camelcase
+    let new_markdown = markdown.replace(/\[today\]/g, getTodayDate());
+
+    // replace [f: ] markups
+    // eslint-disable-next-line camelcase
+    try {
+      new_markdown = new_markdown.replace(/\[f:(.*?):f\]/g, (str) => {
+        return eval(str.replace(/\[f:|:f\]/g, ''));
+      });
+    } catch(error) {
+      // no worries, we don't care about eval errors
+    }
+    return new_markdown;
+} 
 
 class EditNote extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     console.log('NEW NOTE PROPS: ', nextProps);
     if (nextProps.note && nextProps.note.id !== prevState.note.id) {
       return ({
-        note: nextProps.note,
+        note: {
+          ...nextProps.note,
+          markdown: markdownReplaces(nextProps.note.markdown),
+        },
       });
     }
     return null;
@@ -49,10 +68,11 @@ class EditNote extends React.Component {
   }
 
   handleNoteChange = (e) => {
+    const { target: { value } } = e;
     this.setState({
       note: {
         ...this.state.note,
-        markdown: e.target.value,
+        markdown: markdownReplaces(value),
       },
     });
   }
@@ -140,12 +160,9 @@ class EditNote extends React.Component {
     // call action
     const { note } = this.state;
 
-    // replace markups
-    let new_markdown = note.markdown.replace(/\[today\]/g, getTodayDate());
-    
     this.props.updateNote({
       url: serverUrl,
-      note: { ...note, markdown: new_markdown, project_id: [this.props.projectID] },
+      note: { ...note, markdown: markdownReplaces(note.markdown), project_id: [this.props.projectID] },
     });
 
     // this.props.onClose();
@@ -161,7 +178,7 @@ class EditNote extends React.Component {
     this.props.onClose();
   }
 
-  handleEditNote = () => this.setState({ preview: false });
+  handleEditNote = () => this.setState({ preview: !this.state.preview });
 
 
   render() {
