@@ -13,6 +13,7 @@ import Modal from '../modal';
 import SubmitButton from '../submit_button';
 import CancelButton from '../cancel_button';
 import DeleteButton from '../delete_button';
+import { onErrorResumeNext } from 'rxjs';
 
 /**
   * Universal component for Add, Edit
@@ -50,9 +51,15 @@ const Task = ({
   onDelete,
   onStageChange,
   stageValue,
+  errors,
 }) => (
   <Modal dimmer="inverted" closeOnRootNodeClick={false} onClose={onClose} open={show} title={viewTitle}>
     <Modal.Content>
+      { errors.length !== 0 ? 
+      <div>errors!</div>
+      :
+      null
+      }
       <Form>
         <Form.Input label="Title" placeholder="Task title" onChange={onTitleChange} defaultValue={task.title} />
         <Form.Field control={TextArea} label="Description" placeholder="Task description" onChange={onDescriptionChange} defaultValue={task.description} />
@@ -99,6 +106,7 @@ Task.propTypes = {
   onDelete: PropTypes.func,
   onStageChange: PropTypes.func,
   stageValue: PropTypes.number.isRequired,
+  errors: PropTypes.arrayOf(PropTypes.string),
 };
 
 Task.defaultProps = {
@@ -112,6 +120,7 @@ Task.defaultProps = {
   },
   onDelete: null,
   onStageChange: null,
+  errors: [],
 };
 
 export default Task;

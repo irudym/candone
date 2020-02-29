@@ -65,10 +65,25 @@ const ACTION_HANDLERS = {
       ],
     }
   ),
+  [TYPES.ADD_TASKS]: (state, action) => (
+    {
+      ...state,
+      tasks: [
+        ...state.tasks,
+        ...action.value,
+      ],
+    }
+  ),
   [TYPES.SET_TASKS]: (state, action) => (
     {
       ...state,
       tasks: action.value,
+    }
+  ),
+  [TYPES.SET_TASK_ANALYTICS]: (state, action) => (
+    {
+      ...state,
+      progressChart: action.value,
     }
   ),
   [TYPES.CHANGE_TASK]: (state, action) => (
@@ -193,6 +208,7 @@ export const initialState = {
     notes: [],
   },
   hideCompleteTasks: false,
+  progressChart: [],
 };
 
 const candoneReducer = (state = initialState, action) => {

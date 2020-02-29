@@ -128,6 +128,7 @@ class AddNote extends Component {
   handleAddNote = () => {
     // upload data to server
     if (this.validates()) {
+      // TODO: need to move all replace functions to a separate file
       const markdown = this.state.markdown.replace(/\[today\]/g, getTodayDate());
       this.props.createNote({
         url: serverUrl,

@@ -12,6 +12,7 @@ import * as SCHEMAS from '../../lib/schemas';
 import { getTodayDate } from '../../lib/utils';
 
 const markdownReplaces = (markdown) => {
+  if (!markdown) return '';
   // replace [today] markups
     // eslint-disable-next-line camelcase
     let new_markdown = markdown.replace(/\[today\]/g, getTodayDate());

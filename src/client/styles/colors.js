@@ -6,7 +6,7 @@ const colors = {
     active: '#E13C8B',
   },
   gray: '#F6F8FC',
-  borderGray: '#F0F0F0',
+  borderGray: '#EAEAEA',
   darkGray: '#92A4AF',
   darkGrayBorder: '#788892',
   green: '#5ECDBD',

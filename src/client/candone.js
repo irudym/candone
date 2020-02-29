@@ -32,7 +32,7 @@ const sideMenuItems = [
     id: 104,
     title: 'people',
     link: '/people',
-    icon: 'users',
+    icon: 'contacts',
   },
 ];
 

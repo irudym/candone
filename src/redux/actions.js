@@ -82,6 +82,13 @@ export const deleteTask = value => (
   }
 );
 
+export const fetchTaskAnalytics = value => (
+  {
+    type: TYPES.FETCH_TASK_ANALYTICS,
+    payload: { ...value },
+  }
+);
+
 export const fetchNotes = value => (
   {
     type: TYPES.FETCH_NOTES,

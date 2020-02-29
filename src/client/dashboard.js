@@ -17,6 +17,7 @@ import ProjectHolder from './components/project_holder';
 import SpecialButton from './components/special_button';
 import YellowButton from './components/yellow_button';
 import ConfirmationDialog from './components/confirmation_dialog';
+import ProgressChart from './containers/progress_chart';
 
 import { createFollowup } from '../lib/utils';
 
@@ -35,6 +36,11 @@ const columnHeaderStyle = {
   color: elements.title,
 };
 
+
+const chartHolderStyle = {
+  height: '8rem',
+  marginBottom: '2rem',
+};
 
 class Dashboard extends Component {
   state = {
@@ -174,6 +180,14 @@ class Dashboard extends Component {
       <AppContent>
         <Header title="Dashboard" />
         <Grid columns="3">
+          <Grid.Row>
+            <Grid.Column key="11" width="3" />
+            <Grid.Column key="21" width="13">
+              <div className="chart-holder" style={chartHolderStyle}>
+                <ProgressChart />
+              </div>
+            </Grid.Column>
+          </Grid.Row>
           <Grid.Row>
             <Grid.Column key="1" width="3">
               <div style={columnHeaderStyle}>

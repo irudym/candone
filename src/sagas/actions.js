@@ -95,6 +95,16 @@ export function* fetchTasks(action) {
   }
 }
 
+export function* fetchTaskAnalytics(action) {
+  try {
+    const data = yield call(API.fetchTaskAnalytics, action.payload);
+    yield put({ type: TYPES.SET_TASK_ANALYTICS, value: data });
+  } catch (error) {
+    const errors = `Cannot fetch task analytic data from URL: ${action.payload.url}: ${error}`;
+    yield put({ type: TYPES.FETCH_FAILED, errors: [errors] });
+  }
+}
+
 export function* updateTask(action) {
   try {
     yield call(API.updateTask, { ...action.payload });
@@ -165,6 +175,9 @@ export function* createNote(action) {
       },
     });
     */
+    // need to create actions which probably were created inside the note
+    yield put({ type: TYPES.ADD_TASKS, value: data.actions });
+
     // reload the corresponding project
     if (projectId[0]) {
       yield reloadProject({ payload: { url: action.payload.url, id: projectId[0] } });
@@ -254,7 +267,7 @@ export function* reloadProject(action) {
     const data = yield call(API.fetchProject, action.payload);
     yield put({ type: TYPES.CHANGE_PROJECT, value: data });
   } catch (error) {
-    const errors = `Cannot reload project woith ID: ${action.payload.id} due to ${error}`;
+    const errors = `Cannot reload project with ID: ${action.payload.id} due to ${error}`;
     yield put({ type: TYPES.FETCH_FAILED, errors: [errors] });
   }
 }
@@ -271,6 +284,7 @@ export default function* rootSaga() {
   yield takeLatest(TYPES.FETCH_TASKS, fetchTasks);
   yield takeEvery(TYPES.UPDATE_TASK, updateTask);
   yield takeEvery(TYPES.DELETE_TASK, deleteTask);
+  yield takeLatest(TYPES.FETCH_TASK_ANALYTICS, fetchTaskAnalytics);
   // ------ notes
   yield takeEvery(TYPES.CREATE_NOTE, createNote);
   yield takeLatest(TYPES.FETCH_NOTES, fetchNotes);

@@ -222,3 +222,12 @@ export const deleteProject = async ({ url, project }) => {
   });
   return response;
 };
+
+
+export const fetchTaskAnalytics = async ({ url, weeks }) => {
+  const response = await fetch(`${url}/tasks/analytic`, {
+    method: 'GET',
+  });
+  const data = await response.json();
+  return data;
+};

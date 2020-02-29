@@ -15,6 +15,9 @@
     "globals": {
       "fetch": true,
       "document": true,
-      "window": true
+      "window": true,
+      "describe": true,
+      "it": true,
+      "expect": true
     }
 }

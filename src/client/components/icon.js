@@ -5,6 +5,7 @@ import Dashboard, { ReactComponent as DashboardSVG } from '../../assets/icons/Da
 import Notes, { ReactComponent as NotesSVG } from '../../assets/icons/Notes.svg';
 import Projects, { ReactComponent as ProjectsSVG } from '../../assets/icons/Projects.svg';
 import Tasks, { ReactComponent as TasksSVG } from '../../assets/icons/Tasks.svg';
+import Contacts, { ReactComponent as ContactsSVG } from '../../assets/icons/Contacts.svg';
 
 
 const icons = {
@@ -12,6 +13,7 @@ const icons = {
   'notes': NotesSVG,
   'projects': ProjectsSVG,
   'tasks': TasksSVG,
+  'contacts': ContactsSVG,
 };
 
 
@@ -25,7 +27,7 @@ export const Icon = ({ name }) => (
 export const Icon = ({ name }) => {
   const SVGComponent = icons[name];
   if (SVGComponent) {
-    console.log("ICON: ", SVGComponent);
+    // console.log("ICON: ", SVGComponent);
     return (
       <SVGComponent className="candone-icon" />
     );

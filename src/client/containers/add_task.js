@@ -48,11 +48,27 @@ class AddTask extends React.Component {
 
   handleDescriptionChange = e => this.setState({ description: e.target.value })
 
-  validates = () => true
+  addError = (error) => {
+    const errors = [...this.state.errors, error];
+    console.log('ADD ERRORS: ', errors);
+
+    this.setState({ errors });
+  }
+
+  validates = () => {
+    let errors = [];
+    // check all fields
+    // rule #1: task always should have an owner or owners
+    if (this.state.persons.length === 0) {
+      errors.push('The action should always have at least one owner!');
+    }
+    return errors;
+  }
 
   handleAddTask = () => {
     console.log("Add task: ", this.state);
-    if (this.validates()) {
+    const errors = this.validates();
+    if (errors.length === 0) {
       const description = this.state.description.replace(/\[today\]/g, getTodayDate());
       this.props.createTask({
         url: serverUrl,
@@ -65,11 +81,15 @@ class AddTask extends React.Component {
       // }
 
       this.props.onClose();
+    } else {
+      // show errors
+      console.log('ERRORS: ', errors);
+      this.setState(errors);
     }
   }
 
   render() {
-    const { urgency } = this.state;
+    const { urgency, errors } = this.state;
 
     const peopleOptions = this.props.persons.map(person => (
       {
@@ -90,6 +110,7 @@ class AddTask extends React.Component {
         onSubmit={this.handleAddTask}
         onTitleChange={this.handleTitleChange}
         onDescriptionChange={this.handleDescriptionChange}
+        errors={errors}
       />
     );
   }

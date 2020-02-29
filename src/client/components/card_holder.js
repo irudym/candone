@@ -6,7 +6,9 @@ import TaskCard from './task_card';
 import colors, { elements } from '../styles/colors';
 
 const holderStyle = {
-  background: colors.gray,
+  // background: colors.gray,
+  backgroundImage: `linear-gradient(45deg, ${colors.borderGray} 3.13%, ${colors.gray} 3.13%, ${colors.gray} 50%, ${colors.borderGray} 50%, ${colors.borderGray} 53.13%, ${colors.gray} 53.13%, ${colors.gray} 100%)`,
+  backgroundSize: '22.63px 22.63px',
   border: `1px solid ${colors.borderGray}`,
   margin: 8,
   padding: '1rem',
